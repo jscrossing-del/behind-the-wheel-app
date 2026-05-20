@@ -1,0 +1,1577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Steer Right">
+<title>Steer Right by Semler</title>
+<style>
+:root{
+  --bg:#fff;--bg2:#f5f4f0;--bg3:#eeecea;
+  --br:rgba(0,0,0,.1);--br2:rgba(0,0,0,.2);
+  --txt:#1a1a18;--txt2:#6b6b67;--txt3:#9b9b97;
+  --green:#085041;--gbg:#e1f5ee;--gbr:#1d9e75;
+  --blue:#042c53;--bbg:#e6f1fb;--bbr:#185fa5;
+  --amber:#633806;--ambg:#faeeda;--ambr:#ba7517;
+  --red:#501313;--rbg:#fcebeb;--rbr:#a32d2d;
+}
+@media(prefers-color-scheme:dark){:root{
+  --bg:#1c1c1a;--bg2:#252523;--bg3:#2e2e2b;
+  --br:rgba(255,255,255,.1);--br2:rgba(255,255,255,.18);
+  --txt:#f0ede8;--txt2:#a8a8a2;--txt3:#6e6e68;
+  --green:#5dcaa5;--gbg:#0a2e22;--gbr:#1d7a5f;
+  --blue:#85b7eb;--bbg:#0a1e35;--bbr:#2a5fa0;
+  --amber:#f0c070;--ambg:#2a1e08;--ambr:#a07830;
+  --red:#f09090;--rbg:#2a0a0a;--rbr:#7a2020;
+}}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg2);color:var(--txt);font-size:16px}
+.app{max-width:480px;margin:0 auto;background:var(--bg);min-height:100vh;min-height:100dvh}
+
+/* HEADER */
+.hdr{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid var(--br)}
+.hdr-icon{font-size:24px;width:40px;height:40px;background:var(--gbg);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.hdr-title{font-size:19px;font-weight:700}
+.hdr-sub{font-size:13px;color:var(--txt2);margin-top:1px}
+.hdr-actions{margin-left:auto;display:flex;gap:6px}
+
+/* TABS */
+.tabs{display:flex;border-bottom:1px solid var(--br)}
+.tab{flex:1;padding:13px 4px;font-size:15px;font-weight:600;color:var(--txt2);text-align:center;cursor:pointer;border-bottom:3px solid transparent}
+.tab.on{color:var(--txt);border-bottom-color:var(--txt)}
+
+/* PAGES */
+.page{display:none;padding:16px}
+.page.on{display:block}
+
+/* CARDS */
+.card{background:var(--bg);border:1px solid var(--br);border-radius:16px;overflow:hidden;margin-bottom:14px}
+.card-head{padding:14px 16px;border-bottom:1px solid var(--br);display:flex;align-items:center;justify-content:space-between;gap:8px}
+.card-title{font-size:16px;font-weight:700}
+.card-body{padding:14px 16px}
+
+/* SECTION LABEL */
+.slbl{font-size:12px;font-weight:700;color:var(--txt2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
+
+/* FORMS */
+.field{margin-bottom:13px}
+.field label{display:block;font-size:13px;color:var(--txt2);font-weight:600;margin-bottom:5px}
+input,textarea,select{width:100%;padding:12px 14px;font-size:16px;font-family:inherit;border:1px solid var(--br2);border-radius:12px;background:var(--bg2);color:var(--txt);outline:none;-webkit-appearance:none;appearance:none}
+input:focus,textarea:focus,select:focus{border-color:var(--bbr);background:var(--bg)}
+input[readonly]{background:var(--bg3);color:var(--txt2)}
+textarea{resize:none;min-height:80px;line-height:1.5}
+select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9'%3E%3Cpath d='M1 1l6 6 6-6' stroke='%23888' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:40px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+/* BUTTONS */
+.btn{display:block;width:100%;padding:14px;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer;font-family:inherit;border:1px solid var(--br2);background:var(--bg2);color:var(--txt);text-align:center;margin-bottom:10px}
+.btn:last-child{margin-bottom:0}
+.btn:active{opacity:.7}
+.btn-g{background:var(--gbg);border-color:var(--gbr);color:var(--green)}
+.btn-b{background:var(--bbg);border-color:var(--bbr);color:var(--blue)}
+.btn-r{background:var(--rbg);border-color:var(--rbr);color:var(--red)}
+.btn-a{background:var(--ambg);border-color:var(--ambr);color:var(--amber)}
+.btn-sm{padding:8px 14px;font-size:14px;width:auto;display:inline-block;margin-bottom:0;border-radius:10px}
+.btn-row{display:flex;gap:8px}.btn-row .btn{flex:1;margin-bottom:0}
+
+/* TAGS */
+.tag-wrap{display:flex;flex-wrap:wrap;gap:7px;margin:6px 0 8px}
+.tag{background:var(--bbg);color:var(--blue);font-size:14px;padding:5px 12px;border-radius:20px;display:flex;align-items:center;gap:5px}
+.tag-x{cursor:pointer;font-size:17px;line-height:1}
+.tag-row{display:flex;gap:8px}
+.tag-row input{flex:1}
+
+/* STUDENT ROWS */
+.stu-row{display:flex;align-items:center;gap:14px;padding:14px 16px;border-bottom:1px solid var(--br);cursor:pointer}
+.stu-row:last-child{border-bottom:none}
+.stu-row:active{background:var(--bg2)}
+.av{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;flex-shrink:0}
+.sname{font-size:16px;font-weight:600}
+.ssub{font-size:13px;color:var(--txt2);margin-top:2px}
+.bdg{font-size:12px;padding:4px 10px;border-radius:20px;font-weight:700;white-space:nowrap;flex-shrink:0}
+.bd{background:var(--gbg);color:var(--green)}
+.bp{background:var(--bbg);color:var(--blue)}
+.bn{background:var(--bg3);color:var(--txt2)}
+
+/* STATS */
+.stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px}
+.stat{background:var(--bg2);border-radius:12px;padding:12px 8px;text-align:center}
+.stat-v{font-size:22px;font-weight:700}
+.stat-l{font-size:11px;color:var(--txt2);font-weight:600;text-transform:uppercase;letter-spacing:.04em;margin-top:2px}
+
+/* LESSON DOTS */
+.dot-row{display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap}
+.ldot{width:44px;height:44px;border-radius:50%;border:2px solid var(--br2);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;cursor:pointer;color:var(--txt2);background:var(--bg2)}
+.ldot:active{opacity:.7}
+.ldot.done{background:var(--gbg);border-color:var(--gbr);color:var(--green)}
+.ldot.sched{background:var(--bbg);border-color:var(--bbr);color:var(--blue)}
+
+/* NOTES */
+.note-list{display:flex;flex-direction:column;gap:8px;margin-bottom:10px}
+.note-item{background:var(--bg2);border-radius:12px;padding:12px 14px}
+.note-date{font-size:12px;color:var(--txt3);font-weight:600;margin-bottom:3px}
+.note-txt{font-size:15px;line-height:1.5}
+
+/* ── LESSON PAGE ── */
+.mic-wrap{background:var(--bg2);border-radius:16px;padding:16px;margin-bottom:14px}
+.mic-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;gap:8px}
+.mdot{width:11px;height:11px;border-radius:50%;background:var(--txt3);flex-shrink:0}
+.mdot.live{background:var(--gbr);animation:pulse 1s ease-in-out infinite}
+.mdot.wait{background:var(--ambr);animation:pulse .6s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(1.5)}}
+.mlbl{font-size:14px;font-weight:600;padding:4px 12px;border-radius:20px;background:var(--bg3);color:var(--txt2)}
+.mlbl.on{background:var(--gbg);color:var(--green)}
+.wrow{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.waveform{display:flex;align-items:center;gap:3px;height:26px}
+.wbar{width:4px;border-radius:2px;background:var(--gbr);min-height:3px;transition:height .08s}
+.wtxt{font-size:13px;color:var(--txt3);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mapw{background:var(--bg2);border-radius:12px;height:70px;position:relative;overflow:hidden;margin-bottom:12px}
+.mroad{position:absolute;bottom:0;left:0;right:0;height:26px;background:var(--br2);opacity:.5}
+.mdashes{position:absolute;bottom:10px;left:0;right:0;height:3px;background:repeating-linear-gradient(90deg,rgba(255,255,255,.5) 0,rgba(255,255,255,.5) 18px,transparent 18px,transparent 32px)}
+.mcar{position:absolute;bottom:6px;font-size:19px;transition:left 3s linear}
+.mloc-txt{position:absolute;top:8px;left:0;right:0;text-align:center;font-size:13px;color:var(--txt2);font-weight:500}
+
+/* LESSON PLAN CHECKLIST */
+.lp-sec{font-size:12px;font-weight:700;color:var(--txt2);text-transform:uppercase;letter-spacing:.04em;background:var(--bg2);padding:5px 10px;border-radius:8px;margin:12px 0 5px}
+.lp-row{display:flex;align-items:flex-start;gap:9px;padding:6px 4px;cursor:pointer;border-radius:6px}
+.lp-row:active{background:var(--bg2)}
+.lp-cb{width:20px;height:20px;border-radius:5px;border:2px solid var(--br2);flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;transition:all .1s}
+.lp-cb.covered{background:var(--gbg);border-color:var(--gbr);color:var(--green)}
+.lp-cb.struggled{background:var(--ambg);border-color:var(--ambr);color:var(--amber)}
+.lp-txt{font-size:13px;line-height:1.35;flex:1}
+.lp-hint{font-size:12px;color:var(--txt3);margin-top:2px}
+.lp-prog{font-size:13px;color:var(--txt3)}
+
+/* CARRY-OVER + STRUGGLED BANNERS */
+.banner{border-radius:14px;padding:14px 16px;margin-bottom:14px;border:1px solid}
+.banner-amber{background:var(--ambg);border-color:var(--ambr)}
+.banner-red{background:var(--rbg);border-color:var(--rbr)}
+.banner-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px}
+.banner-amber .banner-title{color:var(--amber)}
+.banner-red .banner-title{color:var(--red)}
+.banner-item{font-size:15px;line-height:1.6;display:flex;gap:8px;align-items:flex-start}
+.banner-amber .banner-item{color:var(--amber)}
+.banner-red .banner-item{color:var(--red)}
+.banner-note{font-size:13px;margin-top:6px;opacity:.8}
+.banner-amber .banner-note{color:var(--amber)}
+.banner-red .banner-note{color:var(--red)}
+
+/* POST LESSON */
+.post-section{background:var(--bg2);border-radius:14px;padding:14px 16px;margin-bottom:14px}
+.post-title{font-size:16px;font-weight:700;margin-bottom:4px}
+.post-sub{font-size:14px;color:var(--txt2);margin-bottom:12px;line-height:1.5}
+
+/* TRANSCRIPT */
+.xscript{font-size:12px;color:var(--txt2);background:var(--bg2);border-radius:10px;padding:10px 12px;max-height:110px;overflow-y:auto;line-height:1.6;font-family:'SF Mono',monospace}
+
+/* STATUS BAR */
+.statusbar{display:flex;align-items:center;gap:8px;padding:9px 16px;font-size:13px;color:var(--txt2);background:var(--bg2);border-bottom:1px solid var(--br)}
+.spin{width:11px;height:11px;border:2px solid var(--br2);border-top-color:var(--gbr);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
+@keyframes spin{to{transform:rotate(360deg)}}
+.notice{background:var(--ambg);border-radius:12px;padding:12px 14px;font-size:14px;color:var(--amber);line-height:1.5;margin-bottom:12px}
+.ok{font-size:15px;color:var(--green);font-weight:700;padding:8px 0;text-align:center}
+.divider{height:1px;background:var(--br);margin:14px 0}
+.hide{display:none}
+
+/* DRUM ROLLER DATE PICKER */
+.drum-wrap{display:flex;gap:8px;align-items:flex-end;margin-bottom:4px}
+.drum-col{display:flex;flex-direction:column;align-items:center;flex:1}
+.drum-lbl{font-size:11px;font-weight:600;color:var(--txt2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px}
+.drum{position:relative;height:140px;overflow:hidden;border-radius:12px;background:var(--bg2);border:1px solid var(--br2);cursor:ns-resize;user-select:none;-webkit-user-select:none}
+.drum-inner{position:absolute;width:100%;transition:transform .15s cubic-bezier(.25,.46,.45,.94)}
+.drum-item{height:44px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:500;color:var(--txt2);transition:color .1s,font-size .1s}
+.drum-item.selected{color:var(--txt);font-size:20px;font-weight:700}
+.drum-highlight{position:absolute;top:50%;left:0;right:0;height:44px;transform:translateY(-50%);background:var(--bbg);border-top:2px solid var(--bbr);border-bottom:2px solid var(--bbr);pointer-events:none;border-radius:6px}
+.drum-fade-top{position:absolute;top:0;left:0;right:0;height:48px;background:linear-gradient(to bottom,var(--bg2),transparent);pointer-events:none;z-index:2;border-radius:12px 12px 0 0}
+.drum-fade-bot{position:absolute;bottom:0;left:0;right:0;height:48px;background:linear-gradient(to top,var(--bg2),transparent);pointer-events:none;z-index:2;border-radius:0 0 12px 12px}
+.drum-val{font-size:13px;color:var(--txt2);margin-top:4px;text-align:center;min-height:18px}
+.toggle{position:relative;display:inline-block;width:44px;height:26px;flex-shrink:0}
+.toggle input{opacity:0;width:0;height:0}
+.tslider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:var(--br2);border-radius:26px;transition:.3s}
+.tslider:before{position:absolute;content:"";height:20px;width:20px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.3s}
+.toggle input:checked + .tslider{background:var(--gbr)}
+.toggle input:checked + .tslider:before{transform:translateX(18px)}
+.ai-row{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--txt3);font-style:italic;margin-bottom:10px}
+</style>
+</head>
+<body>
+<div class="app">
+
+<div class="hdr">
+  <div class="hdr-icon">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="1" y="8" width="14" height="9" rx="1.5" fill="#1d9e75"/>
+    <path d="M15 11h4.5l2.5 3.5V17h-7V11z" fill="#1d9e75"/>
+    <rect x="1" y="8" width="14" height="9" rx="1.5" stroke="#085041" stroke-width="1"/>
+    <path d="M15 11h4.5l2.5 3.5V17h-7V11z" stroke="#085041" stroke-width="1"/>
+    <circle cx="5.5" cy="17.5" r="2" fill="#085041"/>
+    <circle cx="5.5" cy="17.5" r="1" fill="#e1f5ee"/>
+    <circle cx="18.5" cy="17.5" r="2" fill="#085041"/>
+    <circle cx="18.5" cy="17.5" r="1" fill="#e1f5ee"/>
+    <rect x="3" y="10" width="4" height="3" rx="0.5" fill="#e1f5ee" opacity="0.8"/>
+    <rect x="8" y="10" width="4" height="3" rx="0.5" fill="#e1f5ee" opacity="0.8"/>
+  </svg>
+</div>
+  <div>
+    <div class="hdr-title">Steer Right</div>
+    <div class="hdr-sub" id="hdr-sub">by Semler · Cambridge, MN</div>
+  </div>
+  <div class="hdr-actions">
+    <button onclick="toggleSettings()" style="background:none;border:none;cursor:pointer;padding:6px;font-size:20px;color:var(--green)" title="Settings">⚙</button>
+  </div>
+</div>
+
+<div class="statusbar">
+  <div class="spin hide" id="save-spin"></div>
+  <span id="save-txt" style="flex:1">Loading…</span>
+</div>
+<div id="settings-bar" style="display:none;padding:10px 14px;background:var(--bg2);border-bottom:1px solid var(--br);gap:12px;flex-direction:column">
+  <div class="field" style="margin-bottom:8px">
+    <label>Your name (used in student texts)</label>
+    <input type="text" id="instructor-name" placeholder="Mr. Semler" oninput="saveInstructor(this.value)">
+  </div>
+  <div style="display:flex;flex-direction:column;gap:10px">
+    <div style="display:flex;align-items:center;justify-content:space-between">
+      <span style="font-size:15px;font-weight:500">Microphone during lessons</span>
+      <label class="toggle"><input type="checkbox" id="tog-mic" checked onchange="saveTog()"><span class="tslider"></span></label>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between">
+      <span style="font-size:15px;font-weight:500">GPS location tracking</span>
+      <label class="toggle"><input type="checkbox" id="tog-gps" checked onchange="saveTog()"><span class="tslider"></span></label>
+    </div>
+  </div>
+  <div style="display:flex;gap:8px;margin-top:4px">
+    <button class="btn btn-g btn-sm" onclick="exportBackup()" style="flex:1">Backup data</button>
+    <label class="btn btn-b btn-sm" style="flex:1;cursor:pointer;text-align:center">Restore<input type="file" id="restore-file" accept=".json" onchange="importBackup(event)" style="display:none"></label>
+  </div>
+</div>
+<div id="backup-msg" class="hide" style="padding:8px 16px;font-size:13px;font-weight:600;border-bottom:1px solid var(--br)"></div>
+
+<div class="tabs">
+  <div class="tab on" onclick="goTab('students')">Students</div>
+  <div class="tab" onclick="goTab('lesson')">Lesson</div>
+</div>
+
+<!-- ═══════════════ STUDENTS PAGE ═══════════════ -->
+<div class="page on" id="page-students">
+
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+    <span class="slbl" style="margin:0">Your students</span>
+    <button class="btn btn-g btn-sm" onclick="openForm(-1)">+ Add student</button>
+  </div>
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+    <button class="btn btn-sm" id="filter-active-btn" onclick="setFilter('active')" style="background:var(--bbg);border-color:var(--bbr);color:var(--blue)">Active</button>
+    <button class="btn btn-sm" id="filter-done-btn" onclick="setFilter('done')">Completed</button>
+    <button class="btn btn-sm" id="filter-all-btn" onclick="setFilter('all')">All</button>
+  </div>
+
+  <div class="card" id="roster-card">
+    <div id="roster">
+      <div style="padding:24px;text-align:center;color:var(--txt3);line-height:1.7">No students yet.<br>Tap <b>+ Add student</b> above!</div>
+    </div>
+  </div>
+
+  <!-- STUDENT FORM -->
+  <div class="card hide" id="form-card">
+    <div class="card-head">
+      <span class="card-title" id="form-title">New student</span>
+      <button class="btn btn-sm" onclick="closeForm()" style="background:var(--bg3)">Cancel</button>
+    </div>
+    <div class="card-body">
+      <div class="g2">
+        <div class="field"><label>First name</label><input id="f-fn" placeholder="Jordan" autocomplete="given-name"></div>
+        <div class="field"><label>Last name</label><input id="f-ln" placeholder="Mills" autocomplete="family-name"></div>
+      </div>
+      <div class="field">
+        <label>Birthday</label>
+        <div class="drum-wrap" id="bday-drum-wrap">
+          <div class="drum-col">
+            <div class="drum-lbl">Month</div>
+            <div class="drum" id="drum-bday-m" data-drum="bday-m"></div>
+            <div class="drum-val" id="dv-bday-m"></div>
+          </div>
+          <div class="drum-col">
+            <div class="drum-lbl">Day</div>
+            <div class="drum" id="drum-bday-d" data-drum="bday-d"></div>
+            <div class="drum-val" id="dv-bday-d"></div>
+          </div>
+          <div class="drum-col">
+            <div class="drum-lbl">Year</div>
+            <div class="drum" id="drum-bday-y" data-drum="bday-y"></div>
+            <div class="drum-val" id="dv-bday-y"></div>
+          </div>
+        </div>
+        <div style="font-size:13px;color:var(--txt2);margin-top:4px">Age: <span id="f-age" style="font-weight:600">—</span></div>
+        <input type="hidden" id="f-bd">
+      </div>
+      <div class="field">
+        <label>Permit date</label>
+        <div class="drum-wrap" id="pm-drum-wrap">
+          <div class="drum-col">
+            <div class="drum-lbl">Month</div>
+            <div class="drum" id="drum-pm-m" data-drum="pm-m"></div>
+            <div class="drum-val" id="dv-pm-m"></div>
+          </div>
+          <div class="drum-col">
+            <div class="drum-lbl">Day</div>
+            <div class="drum" id="drum-pm-d" data-drum="pm-d"></div>
+            <div class="drum-val" id="dv-pm-d"></div>
+          </div>
+          <div class="drum-col">
+            <div class="drum-lbl">Year</div>
+            <div class="drum" id="drum-pm-y" data-drum="pm-y"></div>
+            <div class="drum-val" id="dv-pm-y"></div>
+          </div>
+        </div>
+        <input type="hidden" id="f-pm">
+      </div>
+      <div class="field"><label>Permit number</label><input id="f-pnum" placeholder="A123-456-789"></div>
+      <div class="field"><label>Phone</label><input type="tel" id="f-ph" placeholder="612-555-0000"></div>
+      <div class="field"><label>Behind-the-wheel start date</label><input type="date" id="f-btw" placeholder="Date of Lesson 1"></div>
+      <div class="field">
+        <label>Interests & hobbies</label>
+        <div class="tag-wrap" id="tag-wrap"></div>
+        <div class="tag-row">
+          <input id="tag-in" placeholder="Type a hobby, press Add" onkeydown="if(event.key==='Enter'){event.preventDefault();tagAdd()}">
+          <button class="btn btn-b btn-sm" onclick="tagAdd()">Add</button>
+        </div>
+      </div>
+      <div class="field"><label>Notes</label><textarea id="f-notes" placeholder="Soccer fan, dog named Biscuit, wants to road trip to Colorado…"></textarea></div>
+      <button class="btn btn-g" onclick="saveStudent()">Save student</button>
+      <button class="btn btn-r hide" id="del-btn" onclick="delStudent()">Delete student</button>
+    </div>
+  </div>
+
+  <!-- STUDENT DETAIL -->
+  <div class="hide" id="det-wrap">
+    <div class="card">
+      <div class="card-head">
+        <span class="card-title" id="d-name">—</span>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-b btn-sm" onclick="openForm(selIdx)">Edit</button>
+          <button class="btn btn-sm" onclick="closeDet()" style="background:var(--bg3)">✕</button>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="stats">
+          <div class="stat"><div class="stat-v" id="d-age">—</div><div class="stat-l">Age</div></div>
+          <div class="stat"><div class="stat-v" id="d-days">—</div><div class="stat-l">Permit days</div></div>
+          <div class="stat"><div class="stat-v" id="d-prog">—</div><div class="stat-l">Lessons</div></div>
+        </div>
+
+        <div class="slbl">Lesson progress — tap to toggle</div>
+        <div class="dot-row" id="d-dots"></div>
+
+        <div class="slbl">Session history</div>
+        <div id="d-sessions" style="margin-bottom:16px"></div>
+        <div class="slbl">Interests</div>
+        <div class="tag-wrap" id="d-tags" style="margin-bottom:16px"></div>
+
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+          <span class="slbl" style="margin:0">Lesson notes</span>
+          <button class="btn btn-b btn-sm" onclick="openNoteForm()">+ Add note</button>
+        </div>
+        <div id="note-form-wrap" class="hide" style="margin-bottom:12px">
+          <textarea id="note-in" placeholder="Notes from this lesson…"></textarea>
+          <div class="btn-row" style="margin-top:8px">
+            <button class="btn btn-g" onclick="saveNote()">Save</button>
+            <button class="btn" onclick="closeNoteForm()" style="flex:.4">Cancel</button>
+          </div>
+        </div>
+        <div id="d-notes-list" class="note-list"></div>
+
+        <div class="divider"></div>
+        <div class="slbl">Contact & permit</div>
+        <div style="font-size:15px;color:var(--txt2)" id="d-phone">—</div>
+        <div style="font-size:14px;color:var(--txt2);margin-top:4px">Permit #: <span id="d-pnum" style="font-family:monospace">—</span></div>
+        <div style="font-size:13px;color:var(--txt3);margin-top:3px" id="d-bday">—</div>
+        <div style="font-size:14px;color:var(--txt2);margin-top:6px" id="d-btw-wrap" style="display:none">
+          BTW started: <span id="d-btw" style="font-weight:600">—</span>
+          <span id="d-btw-days" style="font-size:13px;color:var(--txt3);margin-left:6px"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ LESSON PAGE ═══════════════ -->
+<div class="page" id="page-lesson">
+
+  <!-- Mic controls -->
+  <div class="mic-wrap">
+    <div class="mic-top">
+      <div style="display:flex;align-items:center;gap:8px">
+        <div class="mdot" id="mdot"></div>
+        <span class="mlbl" id="mlbl">Idle</span>
+      </div>
+      <button class="btn btn-g btn-sm" id="mic-btn" onclick="toggleLesson()" style="min-width:130px">Start lesson</button>
+    </div>
+    <div class="g2" style="gap:10px">
+      <select id="ls-stu" onchange="onSelChange()"><option value="">— Student —</option></select>
+      <select id="ls-num" onchange="onSelChange()">
+        <option value="1">Lesson 1</option>
+        <option value="2">Lesson 2</option>
+        <option value="3">Lesson 3</option>
+      </select>
+    </div>
+  </div>
+
+  <div id="mic-notice" class="notice hide"></div>
+
+  <!-- Waveform -->
+  <div id="wave-wrap" class="hide" style="background:var(--bg2);border-radius:12px;padding:10px 14px;margin-bottom:12px">
+    <div class="wrow"><div class="waveform" id="waveform"></div><div class="wtxt" id="wtxt">Listening…</div></div>
+  </div>
+
+  <!-- Map -->
+  <div class="mapw">
+    <div class="mroad"></div><div class="mdashes"></div>
+    <div class="mcar" id="mcar" style="left:7%;font-size:0">
+  <svg width="38" height="22" viewBox="0 0 38 22" fill="none" xmlns="http://www.w3.org/2000/svg" style="transform:scaleX(-1)">
+    <rect x="1" y="4" width="22" height="13" rx="2" fill="#1d9e75" stroke="#085041" stroke-width="1"/>
+    <path d="M23 7h7l4 5.5V17H23V7z" fill="#1d9e75" stroke="#085041" stroke-width="1"/>
+    <rect x="3" y="6" width="6" height="5" rx="0.5" fill="#e1f5ee" opacity="0.9"/>
+    <rect x="11" y="6" width="6" height="5" rx="0.5" fill="#e1f5ee" opacity="0.9"/>
+    <circle cx="7" cy="17.5" r="3" fill="#222" stroke="#085041" stroke-width="0.5"/>
+    <circle cx="7" cy="17.5" r="1.5" fill="#666"/>
+    <circle cx="28" cy="17.5" r="3" fill="#222" stroke="#085041" stroke-width="0.5"/>
+    <circle cx="28" cy="17.5" r="1.5" fill="#666"/>
+    <rect x="1" y="15" width="3" height="2" rx="0.5" fill="#ffd700" opacity="0.9"/>
+  </svg>
+</div>
+    <div class="mloc-txt" id="mloc">No active lesson</div>
+  </div>
+
+  <!-- Pre-lesson banners (show before start) -->
+  <div id="struggled-banner" class="banner banner-red hide">
+    <div class="banner-title">Struggled last lesson — focus on these</div>
+    <div id="struggled-list"></div>
+    <div class="banner-note">These carried over from the previous lesson.</div>
+  </div>
+
+  <div id="carryover-banner" class="banner banner-amber hide">
+    <div class="banner-title">Not covered last lesson — work in when possible</div>
+    <div id="carryover-list"></div>
+  </div>
+
+  <!-- Lesson plan -->
+  <div class="card hide" id="lp-card">
+    <div class="card-head">
+      <span class="card-title" id="lp-title">Lesson plan</span>
+      <span class="lp-prog" id="lp-prog"></span>
+    </div>
+    <div class="card-body" id="lp-body" style="max-height:280px;overflow-y:auto">
+      <div style="font-size:14px;color:var(--txt3);text-align:center;padding:12px">Select a student and lesson to see the plan.</div>
+    </div>
+  </div>
+  <div style="font-size:13px;color:var(--txt3);text-align:center;margin-top:-8px;margin-bottom:14px" id="lp-hint-txt" class="hide">Tap once = covered ✓ &nbsp;·&nbsp; Tap again = struggled ⚠</div>
+
+  <!-- Transcript -->
+  <div id="x-wrap" class="hide" style="margin-bottom:14px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+      <span class="slbl" style="margin:0">Transcript</span>
+      <span style="font-size:13px;color:var(--txt3);cursor:pointer;text-decoration:underline" onclick="clearX()">Clear</span>
+    </div>
+    <div class="xscript" id="xscript"></div>
+  </div>
+
+  <!-- POST-LESSON SECTION -->
+  <div id="post-wrap" class="hide">
+
+    <!-- What student struggled with -->
+    <div class="post-section" id="post-struggled-wrap">
+      <div class="post-title">Struggled with</div>
+      <div class="post-sub">These items were marked as struggled. They will appear as priority focus at the start of the next lesson.</div>
+      <div id="post-struggled-list" style="font-size:15px;color:var(--txt);line-height:1.8"></div>
+    </div>
+
+    <!-- What wasn't covered -->
+    <div class="post-section" id="post-missed-wrap">
+      <div class="post-title">Not covered</div>
+      <div class="post-sub">These will carry forward to the next lesson.</div>
+      <div id="post-missed-list" style="font-size:15px;color:var(--txt);line-height:1.8"></div>
+    </div>
+
+    <!-- Practice text to send student -->
+    <div class="post-section">
+      <div class="post-title">Practice text for student</div>
+      <div class="post-sub">Based only on what they struggled with — not items that weren't covered yet.</div>
+      <div id="ai-row" class="ai-row"><div class="spin"></div><span>Generating practice suggestions…</span></div>
+      <div id="practice-msg" class="hide" style="background:var(--bg);border:1px solid var(--br2);border-radius:12px;padding:14px 16px;font-size:15px;line-height:1.6;margin-bottom:12px;white-space:pre-wrap" contenteditable="false"></div>
+      <div id="practice-actions" class="hide">
+        <button class="btn btn-g" onclick="copyPracticeMsg()">Copy to send as text</button>
+        <div class="btn-row">
+          <button class="btn" onclick="editPracticeMsg()">Edit</button>
+          <button class="btn" onclick="regenPracticeMsg()">↻ Regenerate</button>
+        </div>
+      </div>
+      <div class="ok hide" id="copy-ok">✓ Copied! Open Messages and paste.</div>
+    </div>
+
+    <!-- Save notes -->
+    <div class="post-section">
+      <div class="post-title">Add lesson notes</div>
+      <textarea id="post-notes" placeholder="Anything else to note about this lesson…"></textarea>
+      <button class="btn btn-g" style="margin-top:10px" onclick="savePostNotes()">Save to student profile</button>
+      <div class="ok hide" id="notes-ok">✓ Saved!</div>
+    </div>
+
+  </div>
+</div>
+
+</div>
+
+<script>
+const API='https://api.anthropic.com/v1/messages';
+const STORE='steerright_v1';
+const ISTORE='steerright_instructor';
+let rosterFilter='active';
+
+// Load instructor name
+function getInstructor(){return localStorage.getItem(ISTORE)||'Mr. Semler';}
+function saveInstructor(name){if(name)localStorage.setItem(ISTORE,name);}
+
+let students=[],editIdx=-1,selIdx=-1;
+let lessonActive=false,carPos=7,carTimer=null,locIdx=0;
+let recognition=null,recognizing=false;
+let transcript=[],abuf='',aTimer=null,wTimer=null,demoInt=null;
+let curLoc='Cambridge, MN',curCoord='',gpsWatcher=null,gpsReady=false;
+let currentTags=[];
+
+const LOCS=['Main St & 3rd Ave, Cambridge','Oak St School Zone','Hwy 65 On-ramp','Center St & Main','Country Rd 4, rural','Northdale Blvd'];
+const COLS=[{bg:'#e6f1fb',tx:'#0c447c'},{bg:'#e1f5ee',tx:'#085041'},{bg:'#faeeda',tx:'#633806'},{bg:'#fbeaf0',tx:'#4b1528'},{bg:'#eaf3de',tx:'#173404'},{bg:'#faece7',tx:'#4a1b0c'}];
+
+const LP={
+  1:{title:'Lesson 1 — Foundations & Residential',sections:[
+    {h:'Pre-drive',items:[
+      {t:'Hand position on the wheel',d:'9 & 3, relaxed grip, no crossing arms.',m:'Gripping too tight or holding at 12 — causes oversteering.'},
+      {t:'Adjust seat, mirrors & head restraint',d:'Seat at arm\'s length, mirrors cover blind spots, head restraint at ear level.',m:'Skipping this — mirrors set wrong all lesson.'},
+      {t:'Seatbelt, dashboard & controls',d:'Seatbelt clicks, can identify wipers, lights, hazards without looking.',m:'Not knowing where controls are in an emergency.'},
+      {t:'SMOG — introduce the concept',d:'Signal, Mirror, Over shoulder, Go — every lane change and maneuver, every time.',m:'Forgetting the over-shoulder check — the biggest one.'},
+      {t:'Mirror check habit — every 5-8 seconds + before every maneuver',d:'Eyes moving regularly, not fixated on one spot.',m:'Only checking mirrors when something happens — too late.'},
+    ]},
+    {h:'Basics & vehicle control',items:[
+      {t:'Smooth steering — look ahead, not at the hood',d:'Car goes where eyes go — looking 10-12 seconds ahead keeps steering smooth.',m:'Looking too close to the car — causes overcorrecting and weaving.'},
+      {t:'Lane position — centered, not drifting',d:'Equal space on both sides, stays centered through turns.',m:'Hugging the right edge or drifting toward oncoming traffic.'},
+      {t:'Covering the brake',d:'Foot hovering over brake (not resting on it) approaching intersections and hazards.',m:'Resting foot on brake — confuses following drivers with constant brake lights.'},
+      {t:'Looking ahead for hazards & potential problems',d:'Scanning intersections, driveways, parked cars, and pedestrians early.',m:'Reacting too late because eyes weren\'t scanning far enough ahead.'},
+      {t:'Speed adjustment for conditions — rain, gravel, hills, reduced sight lines',d:'Slows before the hazard, not during it.',m:'Maintaining speed into blind corners or on gravel — biggest county road mistake.'},
+      {t:'Stopping distance awareness',d:'Understands it takes much longer to stop than expected — increases following distance.',m:'Following too close and not giving enough room to stop.'},
+      {t:'3-second following rule',d:'Picks a fixed object — car passes it 3 seconds after the car ahead.',m:'Thinks they\'re following at 3 seconds but it\'s really 1.'},
+    ]},
+    {h:'Turns & intersections',items:[
+      {t:'Right turns — approach, yield, execute',d:'Signals early, moves to right side of lane, checks pedestrians, smooth arc.',m:'Swinging wide into oncoming traffic on the turn.'},
+      {t:'Left turns — approach, yield, execute',d:'Signals early, moves to center, waits for clear gap, turns into closest lane.',m:'Turning into the far lane instead of the closest lane.'},
+      {t:'Signaling habits — signal early, every time',d:'Signal on before braking, not during or after.',m:'Signaling at the last second — gives no one time to react.'},
+      {t:'Intersection scanning (left-right-left)',d:'Full scan before entering, even on green.',m:'Looking only one direction — missing cross traffic.'},
+      {t:'4-way stops & right of way rules',d:'Knows order — first to stop, first to go; tie goes to the right.',m:'Waving others through when it\'s their turn — causes confusion.'},
+      {t:'Bypass lane vs no bypass lane',d:'Knows when a right turn lane exists and uses it correctly.',m:'Stopping in through traffic to turn right when a bypass lane is available.'},
+    ]},
+    {h:'Residential & unmarked roads',items:[
+      {t:'Speed management in neighborhoods',d:'At or under 25 mph, slows near driveways, parked cars, kids.',m:'Maintaining 30+ in a neighborhood — fails road test.'},
+      {t:'Stop signs — full stop technique',d:'Comes to a complete stop, tires stop rolling, then checks before going.',m:'Rolling stop — automatic fail on road test.'},
+      {t:'Pedestrians & cyclists — awareness and right of way',d:'Slows and yields before the crosswalk, doesn\'t just check for cars.',m:'Watching only for cars and missing a pedestrian stepping off the curb.'},
+      {t:'Awareness on hills & corners — reduced sight lines',d:'Slows before the crest or corner, stays right, ready to react.',m:'Cresting a hill at full speed — no time to react to stopped traffic.'},
+    ]},
+    {h:'Special maneuvers',items:[
+      {t:'SMOG before hill parking',d:'Checks mirrors and over shoulder before pulling over.',m:'Pulling to curb without checking — could cut off a cyclist.'},
+      {t:'Hill parking — uphill & downhill (with/without curb)',d:'Wheels turned correct direction, parking brake on, in Park.',m:'Turning wheels the wrong direction — rolls into traffic if brake fails.'},
+      {t:'Angle parking — entering & exiting',d:'Centered in space, even on both sides, slow entry.',m:'Pulling in crooked — hard to exit and blocks adjacent spaces.'},
+      {t:'Front 90° pull-in parking',d:'Approaches slowly, turns when door mirrors align with the space line, centered.',m:'Turning too early or too late — ends up on the line.'},
+      {t:'90-degree back (3-point turn)',d:'Checks all directions before each move, slow and controlled.',m:'Moving too fast or not checking before reversing.'},
+      {t:'Roundabout — yield, enter, exit',d:'Yields to traffic already in the circle, signals exiting not entering.',m:'Stopping inside the roundabout or signaling on entry.'},
+      {t:'SMOG before parallel parking',d:'Checks mirrors and over shoulder before pulling up alongside reference car.',m:'Skipping this — could open door into a cyclist or pull in front of traffic.'},
+      {t:'Parallel parking — reference points, two-part technique',d:'Uses consistent reference points, ends up within 12 inches of curb.',m:'Going too fast — rushes the maneuver and loses reference points.'},
+      {t:'SMOG before pulling out of parallel space',d:'Full check before re-entering traffic.',m:'Pulling straight out without checking — merging blind.'},
+    ]},
+    {h:'County road driving',items:[
+      {t:'Speed & lane position on county roads',d:'Stays right of center, adjusts speed for road width and sight lines.',m:'Drifting to the center line on narrow county roads.'},
+      {t:'Gravel & unmarked road awareness',d:'Slows significantly on gravel, knows loose surface changes stopping distance.',m:'Braking hard on gravel — causes skidding and loss of control.'},
+      {t:'Passing zones & sight lines',d:'Only passes in a marked passing zone with clear sight ahead.',m:'Attempting to pass on a hill or corner — can\'t see oncoming traffic.'},
+    ]},
+  ]},
+  2:{title:'Lesson 2 — Town & Highway',sections:[
+    
+    {h:'Cambridge town driving',items:[
+      {t:'Traffic flow & lane selection',d:'In correct lane well before the turn, not cutting across at the last second.',m:'Getting in the wrong lane and making a late lane change.'},
+      {t:'Stop lights — approach & stopping distance',d:'Begins slowing early, smooth stop, stays behind the line.',m:'Hard braking at the last second — stops past the line.'},
+      {t:'Hands on wheel at stop lights',d:'Both hands on wheel, eyes up, watching for the light to change.',m:'Reaching for phone or fidgeting — slow reaction when light turns green.'},
+      {t:'Scanning intersections before proceeding on green',d:'Checks left, right, and left again before accelerating — even on green.',m:'Going immediately on green without scanning — red-light runners are most dangerous here.'},
+      {t:'Pedestrian right of way at crosswalks',d:'Stops and waits for pedestrian to fully clear the lane before proceeding.',m:'Inching forward while pedestrian is still in the road.'},
+      {t:'School zones & speed changes',d:'Slows before the zone, not in it. Returns to normal speed after the zone ends.',m:'Slowing down too late or speeding up too early.'},
+      {t:'Speed adjustment in construction zones',d:'Slows to posted construction speed, stays alert for workers and lane shifts.',m:'Maintaining highway speed through a construction zone.'},
+      {t:'Unprotected left turns — Gap-Gauge-Go',d:'Identifies a safe gap, gauges it approaching, commits fully — no hesitating in the intersection.',m:'Either waiting too long for a perfect gap or committing to an unsafe one.'},
+      {t:'Right turn on red — full stop first',d:'Complete stop, checks pedestrians and cross traffic, then goes only if clear.',m:'Rolling into the turn without a full stop — common road test fail.'},
+      {t:'Multiple turn lanes — stay in your lane through the turn',d:'Enters left lane, stays in left lane through the turn. Same for right.',m:'Drifting into the adjacent turn lane mid-turn.'},
+    ]},
+    {h:'Center left-turn lane',items:[
+      {t:'SMOG entering center turn lane',d:'Signal, check mirror, over shoulder before moving in.',m:'Moving into center lane without checking — could hit someone already in it.'},
+      {t:'When & how to use the center lane',d:'Uses it only to prepare for a left turn, not as a travel or merge lane.',m:'Using the center lane to accelerate into traffic — illegal and dangerous.'},
+      {t:'Yielding to oncoming traffic in center lane',d:'Waits in center lane for a full clear gap before turning.',m:'Turning in front of oncoming traffic because they\'re already in the lane.'},
+      {t:'Avoid over-lingering in center lane',d:'Gets in, waits for gap, turns. In and out.',m:'Driving in center lane for a block before turning.'},
+    ]},
+    {h:'Highway driving',items:[
+      {t:'On-ramp acceleration — build speed before merge',d:'Uses the full length of the ramp to match highway speed.',m:'Reaching the end of the ramp still doing 45 mph — forces merge at wrong speed.'},
+      {t:'Gap-Gauge-Go on merge',d:'Picks a gap early on the ramp, gauges it, commits with full acceleration.',m:'Stopping at the end of the ramp — extremely dangerous.'},
+      {t:'Match highway speed before merging',d:'At or near highway speed before entering the lane.',m:'Merging at 50 into 70 mph traffic — causes rear-end risk.'},
+      {t:'SMOG on every lane change — no exceptions',d:'Every lane change: Signal, Mirror, Over shoulder, Go.',m:'Checking mirrors only — completely misses the blind spot at highway speed.'},
+      {t:'3-second following rule at highway speeds',d:'At 65 mph, 3 seconds is about 290 feet — much more space than it looks.',m:'Thinking they\'re following at 3 seconds when it\'s really 1-2.'},
+      {t:'Following distance in heavy traffic',d:'Adjusts to at least 3 seconds even when traffic is slow.',m:'Tailgating in stop-and-go because everyone else is doing it.'},
+      {t:'Off-ramp — signal early, decelerate after exit',d:'Signals, moves to right lane, takes exit, then brakes on the ramp.',m:'Braking on the highway before the exit — causes rear-end risk.'},
+      {t:'Crossing highway using center island — two-stage',d:'Pulls into island, stops completely, waits for second gap, then crosses.',m:'Trying to find one gap in both directions and rushing it.'},
+      {t:'Rural T-intersection entry to highway',d:'Comes to full stop, checks both directions multiple times, builds speed fast.',m:'Pulling out in front of highway traffic that was harder to judge than expected.'},
+    ]},
+    {h:'Traffic driving',items:[
+      {t:'Reading traffic several cars ahead',d:'Eyes looking past the car immediately ahead to anticipate slowdowns.',m:'Only watching the car directly in front — always reacting too late.'},
+      {t:'Staying calm in congestion',d:'Smooth and consistent, no aggressive acceleration between stops.',m:'Lurching forward and braking hard in stop-and-go — wastes fuel and is uncomfortable.'},
+      {t:'Merging into moving traffic',d:'Matches speed of traffic, uses SMOG, merges smoothly without forcing anyone to brake.',m:'Stopping to wait for a perfect gap instead of matching speed and flowing in.'},
+    ]},
+    {h:'Parallel parking',items:[
+      {t:'SMOG before pulling up alongside reference car',d:'Full mirror and over-shoulder check before stopping in traffic.',m:'Stopping suddenly without checking — surprises drivers behind you.'},
+      
+      {t:'Reference points for the maneuver',d:'Uses the same reference points every time — consistency is the key.',m:'Doing it differently each time and wondering why results vary.'},
+      {t:'Two-part back & forward technique',d:'Back until 45°, turn wheel, back to curb, pull forward to center.',m:'Trying to do it in one smooth arc — almost always hits the curb or lands too far out.'},
+      {t:'Exiting a parallel space safely',d:'SMOG, signal, pull forward slowly, merge when clear.',m:'Reversing out instead of pulling forward — much harder to see traffic.'},
+    ]},
+  ]}
+};
+
+// ── STORAGE ──────────────────────────────────────────────
+function load(){
+  setSave('Loading…',true);
+  try{const d=localStorage.getItem(STORE);students=d?JSON.parse(d):[];}catch(e){students=[];}
+  setSave(students.length?students.length+' student'+(students.length!==1?'s':'')+' loaded':'Ready — add your first student',false);
+  document.getElementById('hdr-sub').textContent=students.length?students.length+' student'+(students.length!==1?'s':'')+' · Cambridge, MN':'Behind-the-wheel instructor';
+  renderRoster();updateSelects();
+}
+function persist(){
+  setSave('Saving…',true);
+  try{localStorage.setItem(STORE,JSON.stringify(students));setSave(students.length+' student'+(students.length!==1?'s':'')+' saved ✓',false);}
+  catch(e){setSave('Save failed — storage full?',false);}
+}
+function setSave(t,s){document.getElementById('save-txt').textContent=t;document.getElementById('save-spin').classList.toggle('hide',!s);}
+
+// ── HELPERS ──────────────────────────────────────────────
+const age=bd=>{if(!bd)return'—';const b=new Date(bd),n=new Date();let a=n.getFullYear()-b.getFullYear();if(n.getMonth()-b.getMonth()<0||(n.getMonth()===b.getMonth()&&n.getDate()<b.getDate()))a--;return a;};
+const daysOn=pd=>pd?Math.floor((new Date()-new Date(pd))/86400000):'—';
+const fmtD=d=>d?new Date(d).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):'—';
+const inits=s=>s.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+const clr=i=>COLS[i%COLS.length];
+const doneCount=s=>(s.lessons||[]).filter(l=>l.done).length;
+function show(id){const el=document.getElementById(id);if(el)el.classList.remove('hide');}
+function hide(id){const el=document.getElementById(id);if(el)el.classList.add('hide');}
+
+// ── ROSTER ───────────────────────────────────────────────
+function renderRoster(){
+  const r=document.getElementById('roster');
+  const filtered=students.filter((s,i)=>{
+    if(rosterFilter==='active')return !s.completed;
+    if(rosterFilter==='done')return !!s.completed;
+    return true;
+  });
+  // Store filtered indices for correct onclick
+  const filteredWithIdx=students.map((s,i)=>({s,i})).filter(({s})=>{
+    if(rosterFilter==='active')return !s.completed;
+    if(rosterFilter==='done')return !!s.completed;
+    return true;
+  }).sort((a,b)=>(a.s.fname||'').localeCompare(b.s.fname||''));
+
+  if(!filtered.length){r.innerHTML='<div style="padding:24px;text-align:center;color:var(--txt3);line-height:1.7">No students yet.<br>Tap <b>+ Add student</b> above!</div>';return;}
+  r.innerHTML=students.map((s,i)=>{
+    const c=clr(i),d=doneCount(s);
+    const b=d===3?'<span class="bdg bd">Done</span>':d>0?`<span class="bdg bp">${d}/3</span>`:'<span class="bdg bn">New</span>';
+    return`<div class="stu-row" onclick="showDet(${i})"><div class="av" style="background:${c.bg};color:${c.tx}">${inits(s.fname+' '+s.lname)}</div><div style="flex:1;min-width:0"><div class="sname">${s.fname} ${s.lname}</div><div class="ssub">Age ${age(s.bday)} · ${s.phone||'No phone'}</div></div>${b}</div>`;
+  }).join('');
+}
+function updateSelects(){
+  const ls=document.getElementById('ls-stu');
+  const cur=ls.value;
+  ls.innerHTML='<option value="">— Student —</option>'+students.map((s,i)=>`<option value="${i}">${s.fname} ${s.lname}</option>`).join('');
+  if(cur)ls.value=cur;
+}
+
+// ── DETAIL ───────────────────────────────────────────────
+function showDet(i){
+  selIdx=i;const s=students[i];
+  show('det-wrap');hide('form-card');
+  document.getElementById('d-name').textContent=s.fname+' '+s.lname;
+  document.getElementById('d-age').textContent=age(s.bday);
+  document.getElementById('d-days').textContent=daysOn(s.permit);
+  document.getElementById('d-prog').textContent=doneCount(s)+'/3';
+  let dots='';
+  for(let n=1;n<=3;n++){const l=(s.lessons||[]).find(x=>x.num===n);const cls=l&&l.done?'done':l&&l.scheduled?'sched':'';dots+=`<div class="ldot ${cls}" onclick="togDone(${i},${n})">${n}</div>`;}
+  dots+=`<span style="font-size:14px;color:var(--txt2)">${doneCount(s)===3?'All done!':doneCount(s)+'/3'}</span>`;
+  document.getElementById('d-dots').innerHTML=dots;
+  document.getElementById('d-tags').innerHTML=(s.tags||[]).length?s.tags.map(t=>`<span class="tag">${t}</span>`).join(''):'<span style="font-size:14px;color:var(--txt3)">None added</span>';
+  renderSessions(i);
+  renderNotes(i);
+  document.getElementById('d-phone').textContent=s.phone||'No phone';
+  document.getElementById('d-pnum').textContent=s.permitNum||'Not on file';
+  document.getElementById('d-bday').textContent=s.bday?'Born '+fmtD(s.bday):'No birthday on file';
+  if(s.btwStart){
+    document.getElementById('d-btw').textContent=fmtD(s.btwStart);
+    const daysIn=Math.floor((new Date()-new Date(s.btwStart))/86400000);
+    document.getElementById('d-btw-days').textContent='('+daysIn+' days ago)';
+    document.getElementById('d-btw-wrap').style.display='block';
+  } else {
+    document.getElementById('d-btw-wrap').style.display='none';
+  }
+  document.getElementById('det-wrap').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function closeDet(){hide('det-wrap');selIdx=-1;}
+function togDone(si,num){
+  if(!students[si].lessons)students[si].lessons=[];
+  const i=students[si].lessons.findIndex(l=>l.num===num);
+  if(i>=0)students[si].lessons[i].done=!students[si].lessons[i].done;
+  else students[si].lessons.push({num,done:true,date:new Date().toISOString().slice(0,10)});
+  persist();showDet(si);renderRoster();
+}
+function renderSessions(i){
+  const el=document.getElementById('d-sessions');
+  if(!el)return;
+  const lessons=students[i].lessons||[];
+  const sessions=lessons.filter(l=>l.done&&l.sessionDate);
+  if(!sessions.length){
+    el.innerHTML='<div style="font-size:14px;color:var(--txt3)">No sessions logged yet.</div>';
+    return;
+  }
+  // Sort by date descending
+  const sorted=[...sessions].sort((a,b)=>new Date(b.sessionDate)-new Date(a.sessionDate));
+  el.innerHTML=sorted.map(s=>{
+    const dur=s.startTime&&s.endTime?calcDur(s.startTime,s.endTime):'';
+    const struggled=(s.struggled||[]).length;
+    return`<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--bg2);border-radius:12px;margin-bottom:8px">
+      <div style="width:40px;height:40px;border-radius:50%;background:var(--gbg);border:2px solid var(--gbr);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:var(--green);flex-shrink:0">${s.num}</div>
+      <div style="flex:1">
+        <div style="font-size:15px;font-weight:600">${fmtD(s.sessionDate)}</div>
+        <div style="font-size:12px;color:var(--txt2);margin-top:2px">${dur?dur+' · ':''}${struggled?struggled+' item'+(struggled!==1?'s':'')+' struggled':'Nothing struggled'}</div>
+        ${s.startTime?`<div style="font-size:12px;color:var(--txt3)">${s.startTime} – ${s.endTime||'?'}</div>`:''}
+      </div>
+      <div style="font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;background:var(--gbg);color:var(--green)">Lesson ${s.num}</div>
+    </div>`;
+  }).join('');
+}
+
+function calcDur(start,end){
+  try{
+    const [sh,sm,sp]=start.match(/(\d+):(\d+)\s*(AM|PM)/i).slice(1);
+    const [eh,em,ep]=end.match(/(\d+):(\d+)\s*(AM|PM)/i).slice(1);
+    let s=parseInt(sh)%12+(sp.toUpperCase()==='PM'?12:0);
+    let e=parseInt(eh)%12+(ep.toUpperCase()==='PM'?12:0);
+    const diff=e*60+parseInt(em)-(s*60+parseInt(sm));
+    if(diff<=0)return'';
+    const h=Math.floor(diff/60),m=diff%60;
+    return h>0?(h+'h'+(m>0?' '+m+'m':'')):(m+'m');
+  }catch(e){return'';}
+}
+
+function renderNotes(i){
+  const nl=students[i].notesLog||[];
+  document.getElementById('d-notes-list').innerHTML=nl.length?nl.slice().reverse().map(n=>`<div class="note-item"><div class="note-date">${fmtD(n.date)}</div><div class="note-txt">${n.text}</div></div>`).join(''):'<div style="font-size:14px;color:var(--txt3)">No notes yet.</div>';
+}
+function openNoteForm(){show('note-form-wrap');}
+function closeNoteForm(){hide('note-form-wrap');document.getElementById('note-in').value='';}
+function saveNote(){
+  const t=document.getElementById('note-in').value.trim();if(!t||selIdx<0)return;
+  if(!students[selIdx].notesLog)students[selIdx].notesLog=[];
+  students[selIdx].notesLog.push({date:new Date().toISOString().slice(0,10),text:t});
+  persist();closeNoteForm();renderNotes(selIdx);
+}
+
+// ── FORM ─────────────────────────────────────────────────
+function openForm(i){
+  editIdx=i;const s=i>=0?students[i]:{};currentTags=[...(s.tags||[])];
+  document.getElementById('form-title').textContent=i>=0?'Edit student':'New student';
+  document.getElementById('del-btn').classList.toggle('hide',i<0);
+  document.getElementById('f-fn').value=s.fname||'';document.getElementById('f-ln').value=s.lname||'';
+  document.getElementById('f-bd').value=s.bday||'';document.getElementById('f-pm').value=s.permit||'';
+  document.getElementById('f-pnum').value=s.permitNum||'';document.getElementById('f-ph').value=s.phone||'';
+  document.getElementById('f-notes').value=s.notes||'';
+  document.getElementById('f-btw').value=s.btwStart||'';
+  document.getElementById('f-age').value=s.bday?age(s.bday)+' yrs old':'';
+  renderTags();
+  // Clear and re-init drums every time form opens
+  ['drum-bday-m','drum-bday-d','drum-bday-y','drum-pm-m','drum-pm-d','drum-pm-y'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el)el.innerHTML='';
+    const key=id.replace('drum-','');
+    delete drumState[key];
+  });
+  setTimeout(()=>initDrums(s.bday||'',s.permit||''),50);
+  show('form-card');hide('det-wrap');
+  document.getElementById('form-card').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function closeForm(){hide('form-card');}
+function calcAge(){/* handled by drum */}
+function saveStudent(){
+  const fn=document.getElementById('f-fn').value.trim();if(!fn){alert('Please enter a first name.');return;}
+  const o={fname:fn,lname:document.getElementById('f-ln').value.trim(),bday:document.getElementById('f-bd').value,
+    permit:getDrumDate('pm'),permitNum:document.getElementById('f-pnum').value.trim(),
+    phone:document.getElementById('f-ph').value.trim(),
+    btwStart:document.getElementById('f-btw').value,notes:document.getElementById('f-notes').value.trim(),
+    tags:[...currentTags],lessons:editIdx>=0?(students[editIdx].lessons||[]):[],notesLog:editIdx>=0?(students[editIdx].notesLog||[]):[]};
+  if(editIdx>=0)students[editIdx]={...students[editIdx],...o};else students.push(o);
+  persist();closeForm();renderRoster();updateSelects();if(editIdx>=0)showDet(editIdx);editIdx=-1;
+}
+function delStudent(){
+  if(editIdx<0||!confirm('Delete this student? Cannot be undone.'))return;
+  students.splice(editIdx,1);editIdx=-1;selIdx=-1;
+  persist();closeForm();closeDet();renderRoster();updateSelects();
+}
+function renderTags(){document.getElementById('tag-wrap').innerHTML=currentTags.map((t,i)=>`<span class="tag">${t}<span class="tag-x" onclick="rmTag(${i})">×</span></span>`).join('');}
+function tagAdd(){const v=document.getElementById('tag-in').value.trim();if(v&&!currentTags.includes(v)){currentTags.push(v);renderTags();}document.getElementById('tag-in').value='';}
+function rmTag(i){currentTags.splice(i,1);renderTags();}
+
+// ── LESSON SELECTION CHANGE ───────────────────────────────
+function onSelChange(){
+  if(lessonActive)return;
+  const siV=document.getElementById('ls-stu').value;
+  const lnV=parseInt(document.getElementById('ls-num').value);
+  if(siV===''){hide('lp-card');hide('lp-hint-txt');hide('struggled-banner');hide('carryover-banner');return;}
+  show('lp-card');show('lp-hint-txt');
+  renderLP(lnV);
+  showPreLessonBanners(parseInt(siV),lnV);
+}
+
+// ── PRE-LESSON BANNERS ───────────────────────────────────
+function showPreLessonBanners(si,lnV){
+  const s=students[si];
+  // Struggled items from previous lesson
+  if(lnV>1){
+    const prevLesson=(s.lessons||[]).find(l=>l.num===lnV-1);
+    const struggled=prevLesson&&prevLesson.struggled?prevLesson.struggled:[];
+    if(struggled.length){
+      document.getElementById('struggled-list').innerHTML=struggled.map(item=>`<div class="banner-item"><span>→</span><span>${item}</span></div>`).join('');
+      show('struggled-banner');
+    }else{hide('struggled-banner');}
+    // Carry-overs (not covered)
+    const prevCk=prevLesson&&prevLesson.checked?prevLesson.checked:{};
+    const lp=LP[lnV-1];const missed=[];
+    lp.sections.forEach((sec,si2)=>{sec.items.forEach((item,ii)=>{if(!prevCk[si2+'-'+ii])missed.push(typeof item==='object'?item.t:item);});});
+    if(missed.length){
+      document.getElementById('carryover-list').innerHTML=missed.map(item=>`<div class="banner-item"><span>→</span><span>${item}</span></div>`).join('');
+      show('carryover-banner');
+    }else{hide('carryover-banner');}
+  }else{hide('struggled-banner');hide('carryover-banner');}
+}
+
+// ── LESSON PLAN ───────────────────────────────────────────
+function renderLP(lnV){
+  const lp=LP[lnV];
+  const siV=document.getElementById('ls-stu').value;
+  const s=siV!==''?students[parseInt(siV)]:null;
+  const lesson=s?(s.lessons||[]).find(l=>l.num===lnV):null;
+  const ck=lesson&&lesson.checked?lesson.checked:{};
+  const str=lesson&&lesson.struggled_keys?lesson.struggled_keys:{};
+  let total=0,covered=0,html='';
+
+  // ── CARRY-FORWARD SECTION ──────────────────────────────────────
+  // Collect struggled + missed items from ALL previous lessons
+  const carriedStruggled=[]; // {text, fromLesson, lpNum, si, ii}
+  const carriedMissed=[];
+
+  if(s && lnV>1){
+    for(let prevN=1;prevN<lnV;prevN++){
+      const prevLesson=(s.lessons||[]).find(l=>l.num===prevN);
+      const prevLP=LP[prevN];
+      if(!prevLP)continue;
+      const prevCk=prevLesson&&prevLesson.checked?prevLesson.checked:{};
+      const prevStr=prevLesson&&prevLesson.struggled_keys?prevLesson.struggled_keys:{};
+      prevLP.sections.forEach((sec,si)=>{
+        sec.items.forEach((item,ii)=>{
+          const k=`${si}-${ii}`;
+          const itemTitle=typeof item==='object'?item.t:item;
+          const itemDesc=typeof item==='object'?item.d:'';
+          const itemMistake=typeof item==='object'?item.m:'';
+          if(prevStr[k]){
+            // Check if already resolved in this lesson's carry data
+            const cKey=`carry-s-${prevN}-${si}-${ii}`;
+            const isCovered=!!ck[cKey];
+            const isStillStruggled=!!(str[cKey]);
+            carriedStruggled.push({itemTitle,itemDesc,itemMistake,fromLesson:prevN,cKey,isCovered,isStillStruggled});
+          } else if(!prevCk[k]){
+            const cKey=`carry-m-${prevN}-${si}-${ii}`;
+            const isCovered=!!ck[cKey];
+            const isStruggled=!!(str[cKey]);
+            carriedMissed.push({itemTitle,itemDesc,itemMistake,fromLesson:prevN,cKey,isCovered,isStruggled});
+          }
+        });
+      });
+    }
+  }
+
+  // Render struggled carry-forwards
+  if(carriedStruggled.length){
+    html+=`<div class="lp-sec" style="background:var(--rbg);color:var(--red);cursor:pointer;display:flex;align-items:center;justify-content:space-between" onclick="togSection('cf-struggled')">
+        <span>Struggled in previous lesson — work on these first</span>
+        <span id="cf-struggled-arr">▾</span>
+      </div>
+      <div id="cf-struggled">`;
+    carriedStruggled.forEach(({itemTitle,itemDesc,itemMistake,fromLesson,cKey,isCovered,isStillStruggled})=>{
+      let cbCls='',cbTxt='';
+      if(isStillStruggled){cbCls='struggled';cbTxt='⚠';}
+      else if(isCovered){cbCls='covered';cbTxt='✓';}
+      total++;if(isCovered||isStillStruggled)covered++;
+      const detailId=`lp-det-cf-${cKey}`;
+      const detailHtml=itemDesc?`<div id="${detailId}" style="display:none;margin-top:6px;padding:8px 10px;background:var(--bg);border-radius:8px;border:1px solid var(--br)">
+        <div style="font-size:12px;font-weight:700;color:var(--green);margin-bottom:2px">Success looks like:</div>
+        <div style="font-size:13px;color:var(--txt);line-height:1.5;margin-bottom:6px">${itemDesc}</div>
+        <div style="font-size:12px;font-weight:700;color:var(--amber);margin-bottom:2px">Common mistake:</div>
+        <div style="font-size:13px;color:var(--txt);line-height:1.5">${itemMistake}</div>
+      </div>`:'';
+      html+=`<div class="lp-row">
+        <div class="lp-cb ${cbCls}" onclick="togCarry(${lnV},'${cKey}')">${cbTxt}</div>
+        <div style="flex:1">
+          <div class="lp-txt" onclick="togDetail('${detailId}')" style="cursor:pointer">
+            ${itemTitle} <span style="font-size:11px;color:var(--txt3)">▾</span>
+          </div>
+          <div style="font-size:11px;color:var(--red);margin-top:1px">From Lesson ${fromLesson}</div>
+          ${detailHtml}
+        </div>
+      </div>`;
+    });
+  }
+
+  // Render missed carry-forwards
+  if(carriedMissed.length){
+    html+=`<div class="lp-sec" style="background:var(--ambg);color:var(--amber);cursor:pointer;display:flex;align-items:center;justify-content:space-between" onclick="togSection('cf-missed')">
+        <span>Not covered in previous lesson</span>
+        <span id="cf-missed-arr">▾</span>
+      </div>
+      <div id="cf-missed">`;
+    carriedMissed.forEach(({itemTitle,itemDesc,itemMistake,fromLesson,cKey,isCovered,isStruggled})=>{
+      let cbCls='',cbTxt='';
+      if(isStruggled){cbCls='struggled';cbTxt='⚠';}
+      else if(isCovered){cbCls='covered';cbTxt='✓';}
+      total++;if(isCovered||isStruggled)covered++;
+      const detailId=`lp-det-cm-${cKey}`;
+      const detailHtml=itemDesc?`<div id="${detailId}" style="display:none;margin-top:6px;padding:8px 10px;background:var(--bg);border-radius:8px;border:1px solid var(--br)">
+        <div style="font-size:12px;font-weight:700;color:var(--green);margin-bottom:2px">Success looks like:</div>
+        <div style="font-size:13px;color:var(--txt);line-height:1.5;margin-bottom:6px">${itemDesc}</div>
+        <div style="font-size:12px;font-weight:700;color:var(--amber);margin-bottom:2px">Common mistake:</div>
+        <div style="font-size:13px;color:var(--txt);line-height:1.5">${itemMistake}</div>
+      </div>`:'';
+      html+=`<div class="lp-row">
+        <div class="lp-cb ${cbCls}" onclick="togCarry(${lnV},'${cKey}')">${cbTxt}</div>
+        <div style="flex:1">
+          <div class="lp-txt" onclick="togDetail('${detailId}')" style="cursor:pointer">
+            ${itemTitle} <span style="font-size:11px;color:var(--txt3)">▾</span>
+          </div>
+          <div style="font-size:11px;color:var(--amber);margin-top:1px">From Lesson ${fromLesson}</div>
+          ${detailHtml}
+        </div>
+      </div>`;
+    });
+  }
+
+  if(carriedStruggled.length) html+='</div>';
+  if(carriedMissed.length) html+='</div>';
+
+  // ── REGULAR LESSON PLAN ────────────────────────────────────────
+  if(carriedStruggled.length||carriedMissed.length){
+    html+=`<div class="lp-sec">Lesson ${lnV} — regular plan</div>`;
+  }
+
+  lp.sections.forEach((sec,si)=>{
+    html+=`<div class="lp-sec">${sec.h}</div>`;
+    sec.items.forEach((item,ii)=>{
+      const k=`${si}-${ii}`;
+      const isCovered=!!ck[k];
+      const isStruggled=!!str[k];
+      let cbCls='',cbTxt='';
+      if(isStruggled){cbCls='struggled';cbTxt='⚠';}
+      else if(isCovered){cbCls='covered';cbTxt='✓';}
+      const itemTitle=typeof item==='object'?item.t:item;
+      const itemDesc=typeof item==='object'?item.d:'';
+      const itemMistake=typeof item==='object'?item.m:'';
+      total++;if(isCovered||isStruggled)covered++;
+      const detailId=`lp-det-${si}-${ii}`;
+      const detailHtml=itemDesc?`<div id="${detailId}" style="display:none;margin-top:6px;padding:8px 10px;background:var(--bg);border-radius:8px;border:1px solid var(--br)">
+        <div style="font-size:12px;font-weight:700;color:var(--green);margin-bottom:2px">Success looks like:</div>
+        <div style="font-size:13px;color:var(--txt);line-height:1.5;margin-bottom:6px">${itemDesc}</div>
+        <div style="font-size:12px;font-weight:700;color:var(--amber);margin-bottom:2px">Common mistake:</div>
+        <div style="font-size:13px;color:var(--txt);line-height:1.5">${itemMistake}</div>
+      </div>`:'';
+      html+=`<div class="lp-row">
+        <div class="lp-cb ${cbCls}" onclick="togCk(${lnV},${si},${ii})">${cbTxt}</div>
+        <div style="flex:1">
+          <div class="lp-txt" onclick="togDetail('${detailId}')" style="cursor:pointer">${itemTitle} <span style="font-size:11px;color:var(--txt3)">▾</span></div>
+          ${detailHtml}
+        </div>
+      </div>`;
+    });
+  });
+
+  document.getElementById('lp-title').textContent=lp.title;
+  document.getElementById('lp-prog').textContent=covered+'/'+total;
+  document.getElementById('lp-body').innerHTML=html;
+}
+
+// Toggle a carry-forward item (cycle: unchecked → covered → struggled → unchecked)
+function togCarry(lnV,cKey){
+  const siV=document.getElementById('ls-stu').value;if(siV==='')return;
+  const si=parseInt(siV);
+  if(!students[si].lessons)students[si].lessons=[];
+  let lesson=students[si].lessons.find(l=>l.num===lnV);
+  if(!lesson){lesson={num:lnV,done:false,date:new Date().toISOString().slice(0,10),checked:{},struggled_keys:{},struggled:[]};students[si].lessons.push(lesson);}
+  if(!lesson.checked)lesson.checked={};
+  if(!lesson.struggled_keys)lesson.struggled_keys={};
+
+  if(lesson.struggled_keys[cKey]){
+    // struggled → unchecked
+    delete lesson.struggled_keys[cKey];
+    delete lesson.checked[cKey];
+    // Remove from struggled text array
+    // (we don't have item text here easily so just leave array as is)
+  } else if(lesson.checked[cKey]){
+    // covered → struggled
+    lesson.struggled_keys[cKey]=true;
+    delete lesson.checked[cKey];
+  } else {
+    // unchecked → covered
+    lesson.checked[cKey]=true;
+  }
+  persist();renderLP(lnV);
+}
+
+function togSection(id){
+  const el=document.getElementById(id);
+  if(!el)return;
+  const open=el.style.display!=='none';
+  el.style.display=open?'none':'block';
+  const arr=document.getElementById(id+'-arr');
+  if(arr)arr.textContent=open?'▸':'▾';
+}
+
+function togDetail(id){
+  const el=document.getElementById(id);
+  if(el)el.style.display=el.style.display==='block'?'none':'block';
+}
+
+function togCk(lnV,si2,ii){
+  const siV=document.getElementById('ls-stu').value;if(siV==='')return;
+  const si=parseInt(siV);
+  if(!students[si].lessons)students[si].lessons=[];
+  let lesson=students[si].lessons.find(l=>l.num===lnV);
+  if(!lesson){lesson={num:lnV,done:false,date:new Date().toISOString().slice(0,10),checked:{},struggled_keys:{}};students[si].lessons.push(lesson);}
+  if(!lesson.checked)lesson.checked={};
+  if(!lesson.struggled_keys)lesson.struggled_keys={};
+  const k=`${si2}-${ii}`;
+  // Cycle: unchecked → covered → struggled → unchecked
+  if(lesson.struggled_keys[k]){
+    delete lesson.struggled_keys[k];delete lesson.checked[k];
+  }else if(lesson.checked[k]){
+    lesson.struggled_keys[k]=true;
+    // Save the item text to struggled array for easy access
+    if(!lesson.struggled)lesson.struggled=[];
+    const raw=LP[lnV].sections[si2].items[ii];const itemText=typeof raw==='object'?raw.t:raw;
+    if(!lesson.struggled.includes(itemText))lesson.struggled.push(itemText);
+  }else{
+    lesson.checked[k]=true;
+    // Remove from struggled if it was there
+    if(lesson.struggled){const idx=lesson.struggled.indexOf(LP[lnV].sections[si2].items[ii]);if(idx>=0)lesson.struggled.splice(idx,1);}
+    delete lesson.struggled_keys[k];
+  }
+  persist();renderLP(lnV);
+}
+
+// ── LIVE LESSON ───────────────────────────────────────────
+function toggleLesson(){
+  lessonActive=!lessonActive;
+  const btn=document.getElementById('mic-btn'),dot=document.getElementById('mdot'),lbl=document.getElementById('mlbl');
+  const siV=document.getElementById('ls-stu').value,lnV=parseInt(document.getElementById('ls-num').value);
+  if(lessonActive){
+    if(siV===''){alert('Please select a student first.');lessonActive=false;return;}
+    btn.textContent='End lesson';btn.className='btn btn-r btn-sm';btn.style.minWidth='130px';
+    lbl.textContent='Starting…';lbl.className='mlbl';dot.classList.add('wait');
+    show('x-wrap');hide('post-wrap');hide('mic-notice');
+    hide('struggled-banner');hide('carryover-banner');
+    transcript=[];abuf='';locIdx=0;carPos=7;
+    window._lessonStartTime=new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',hour12:true});
+    window._lessonStartDate=new Date().toISOString().slice(0,10);
+    // Auto-log lesson start date
+    if(siV!==''){
+      const si2=parseInt(siV);
+      if(!students[si2].lessons)students[si2].lessons=[];
+      let lesson2=students[si2].lessons.find(l=>l.num===lnV);
+      if(!lesson2){lesson2={num:lnV,done:false,date:new Date().toISOString().slice(0,10),checked:{},struggled_keys:{},struggled:[]};students[si2].lessons.push(lesson2);}
+      if(!lesson2.date)lesson2.date=new Date().toISOString().slice(0,10);
+      if(!lesson2.sessionDate)lesson2.sessionDate=new Date().toISOString().slice(0,10);
+      persist();
+    }
+    startMic();startCar();
+  }else{
+    stopMic();stopCar();
+    btn.textContent='Start lesson';btn.className='btn btn-g btn-sm';btn.style.minWidth='130px';
+    lbl.textContent='Idle';lbl.className='mlbl';dot.classList.remove('live','wait');
+    hide('wave-wrap');document.getElementById('mcar').style.left='7%';document.getElementById('mloc').textContent='Lesson ended';
+    // Mark lesson done + log session date/time
+    if(siV!==''){
+      const si=parseInt(siV);if(!students[si].lessons)students[si].lessons=[];
+      const ex=students[si].lessons.findIndex(l=>l.num===lnV);
+      const endTime=new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',hour12:true});
+      const sessionDate=window._lessonStartDate||new Date().toISOString().slice(0,10);
+      const startTime=window._lessonStartTime||'';
+      // Auto-set BTW start date when lesson 1 is completed for the first time
+      if(lnV===1&&!students[si].btwStart){
+        students[si].btwStart=sessionDate;
+      }
+      if(ex>=0){
+        students[si].lessons[ex].done=true;
+        students[si].lessons[ex].sessionDate=sessionDate;
+        students[si].lessons[ex].startTime=startTime;
+        students[si].lessons[ex].endTime=endTime;
+      } else {
+        students[si].lessons.push({num:lnV,done:true,date:sessionDate,sessionDate,startTime,endTime,checked:{},struggled_keys:{},struggled:[]});
+      }
+      persist();renderRoster();
+    }
+    buildPostLesson(siV,lnV);
+    show('post-wrap');
+  }
+}
+
+function buildPostLesson(siV,lnV){
+  if(siV==='')return;
+  const si=parseInt(siV);const s=students[si];
+  const lesson=(s.lessons||[]).find(l=>l.num===lnV);
+  const ck=lesson&&lesson.checked?lesson.checked:{};
+  const str=lesson&&lesson.struggled_keys?lesson.struggled_keys:{};
+
+  // Struggled — include both regular items AND carry-forward items marked as struggled
+  const struggled=lesson&&lesson.struggled?[...lesson.struggled]:[];
+  // Also add carry-forward items that were marked struggled this lesson
+  Object.keys(str).forEach(k=>{
+    if(k.startsWith('carry-')){
+      // Extract item title from LP
+      const parts=k.split('-');
+      if(parts[1]==='s'||parts[1]==='m'){
+        const fromLesson=parseInt(parts[2]);
+        const secIdx=parseInt(parts[3]);
+        const itemIdx=parseInt(parts[4]);
+        const prevLP=LP[fromLesson];
+        if(prevLP&&prevLP.sections[secIdx]&&prevLP.sections[secIdx].items[itemIdx]){
+          const raw=prevLP.sections[secIdx].items[itemIdx];
+          const title=(typeof raw==='object'?raw.t:raw)+' (from Lesson '+fromLesson+')';
+          if(!struggled.includes(title))struggled.push(title);
+        }
+      }
+    }
+  });
+
+  if(struggled.length){
+    document.getElementById('post-struggled-list').innerHTML=struggled.map(item=>`<div style="display:flex;gap:8px;align-items:flex-start"><span style="color:var(--ambr);margin-top:2px">⚠</span><span>${item}</span></div>`).join('');
+    show('post-struggled-wrap');
+  }else{
+    document.getElementById('post-struggled-list').innerHTML='<div style="color:var(--txt3)">Nothing marked as struggled — great lesson!</div>';
+    show('post-struggled-wrap');
+  }
+
+  // Not covered — regular lesson items not checked or struggled
+  const lp=LP[lnV];const missed=[];
+  lp.sections.forEach((sec,si2)=>{sec.items.forEach((item,ii)=>{const k=`${si2}-${ii}`;if(!ck[k]&&!str[k])missed.push(typeof item==='object'?item.t:item);});});
+  // Also add carry-forward missed items that were still not addressed
+  if(lnV>1){
+    for(let prevN=1;prevN<lnV;prevN++){
+      const prevLesson=(s.lessons||[]).find(l=>l.num===prevN);
+      const prevLP=LP[prevN];if(!prevLP)continue;
+      const prevCk=prevLesson&&prevLesson.checked?prevLesson.checked:{};
+      const prevStr=prevLesson&&prevLesson.struggled_keys?prevLesson.struggled_keys:{};
+      prevLP.sections.forEach((sec,si2)=>{
+        sec.items.forEach((item,ii)=>{
+          const k=`${si2}-${ii}`;
+          if(!prevCk[k]&&!prevStr[k]){
+            const cKey=`carry-m-${prevN}-${si2}-${ii}`;
+            if(!ck[cKey]&&!str[cKey]){
+              const raw=prevLP.sections[si2].items[ii];
+              missed.push((typeof raw==='object'?raw.t:raw)+' (from Lesson '+prevN+')');
+            }
+          }
+        });
+      });
+    }
+  }
+  if(missed.length){
+    document.getElementById('post-missed-list').innerHTML=missed.map(item=>`<div style="display:flex;gap:8px;align-items:flex-start"><span style="color:var(--ambr);margin-top:2px">→</span><span>${item}</span></div>`).join('');
+    show('post-missed-wrap');
+  }else{
+    document.getElementById('post-missed-list').innerHTML='<div style="color:var(--txt3)">Everything was covered!</div>';
+    show('post-missed-wrap');
+  }
+  // Generate practice text
+  hide('practice-msg');hide('practice-actions');hide('copy-ok');show('ai-row');
+  genPracticeMsg(s,lnV,struggled,missed);
+}
+
+async function genPracticeMsg(s,lnV,struggled,missed){
+  const hobbs=(s.tags||[]).join(', ')||'not noted';
+  // Also pull any carry-forward items still marked as struggled
+const cfStruggled=[];
+if(s&&lnV>1){
+  for(let pn=1;pn<lnV;pn++){
+    const pl=(s.lessons||[]).find(l=>l.num===lnV);
+    if(!pl)continue;
+    const pStr=pl.struggled_keys||{};
+    Object.keys(pStr).forEach(k=>{
+      if(k.startsWith('carry-')){
+        const parts=k.split('-');
+        const fromL=parseInt(parts[2]);const si2=parseInt(parts[3]);const ii=parseInt(parts[4]);
+        const pLP=LP[fromL];
+        if(pLP&&pLP.sections[si2]&&pLP.sections[si2].items[ii]){
+          const raw=pLP.sections[si2].items[ii];
+          cfStruggled.push((typeof raw==='object'?raw.t:raw)+' (from Lesson '+fromL+')');
+        }
+      }
+    });
+  }
+}
+const allStruggled=[...struggled,...cfStruggled];
+const struggledTxt=allStruggled.length?allStruggled.join(', '):'nothing specific';
+  const missedTxt=missed.length?missed.slice(0,5).join(', '):'everything was covered';
+  const prompt=`You are a friendly behind-the-wheel driving instructor in Cambridge, MN. Write a short, encouraging text message (under 80 words) to send to a student after their lesson.
+
+Student: ${s.fname} ${s.lname}
+Lesson: ${lnV} of 3
+Struggled with: ${struggledTxt}
+Not covered yet (carry to next lesson): ${missedTxt}
+Interests: ${hobbs}
+
+The text should:
+1. Be warm and encouraging
+2. Tell them specifically what to practice before the next lesson based ONLY on what they STRUGGLED with (marked struggled) — do NOT mention things that were simply not covered yet
+3. Mention one interest naturally if it fits
+4. No emojis. Sign off with the instructor's name.
+5. Just the message text.
+
+Instructor name: ${getInstructor()}`;
+
+  try{
+    const res=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:300,messages:[{role:'user',content:prompt}]})});
+    const data=await res.json();
+    const txt=data.content?.find(b=>b.type==='text')?.text;
+    if(txt){
+      document.getElementById('practice-msg').textContent=txt.trim();
+    }else{throw new Error('no text');}
+  }catch(e){
+    // Fallback — build from data without AI
+    let msg=`Hi ${s.fname}, great work today on Lesson ${lnV}! `;
+    if(struggled.length)msg+=`Before our next lesson, spend some extra time practicing ${struggled.slice(0,2).join(' and ').toLowerCase()}. `;
+    else msg+=`You had a strong lesson today. `;
+    msg+=`Keep getting those hours in and you'll be ready for your test in no time! — ${getInstructor()}`;
+    document.getElementById('practice-msg').textContent=msg;
+  }
+  hide('ai-row');
+  document.getElementById('practice-msg').contentEditable='false';
+  show('practice-msg');show('practice-actions');
+}
+
+function editPracticeMsg(){document.getElementById('practice-msg').contentEditable='true';document.getElementById('practice-msg').focus();}
+function copyPracticeMsg(){
+  const el=document.getElementById('practice-msg');el.contentEditable='false';
+  const txt=el.textContent;
+  try{navigator.clipboard.writeText(txt);}catch(e){const ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);}
+  show('copy-ok');
+}
+function regenPracticeMsg(){
+  const siV=document.getElementById('ls-stu').value;const lnV=parseInt(document.getElementById('ls-num').value);
+  if(siV==='')return;
+  const si=parseInt(siV);const s=students[si];
+  const lesson=(s.lessons||[]).find(l=>l.num===lnV);
+  const struggled=lesson&&lesson.struggled?lesson.struggled:[];
+  const ck=lesson&&lesson.checked?lesson.checked:{};
+  const str=lesson&&lesson.struggled_keys?lesson.struggled_keys:{};
+  const lp=LP[lnV];const missed=[];
+  lp.sections.forEach((sec,si2)=>{sec.items.forEach((item,ii)=>{const k=`${si2}-${ii}`;if(!ck[k]&&!str[k])missed.push(item);});});
+  hide('practice-msg');hide('practice-actions');hide('copy-ok');show('ai-row');
+  genPracticeMsg(s,lnV,struggled,missed);
+}
+
+function savePostNotes(){
+  const siV=document.getElementById('ls-stu').value,t=document.getElementById('post-notes').value.trim();
+  if(siV===''||!t)return;
+  const si=parseInt(siV);if(!students[si].notesLog)students[si].notesLog=[];
+  students[si].notesLog.push({date:new Date().toISOString().slice(0,10),text:'Lesson '+document.getElementById('ls-num').value+': '+t});
+  persist();show('notes-ok');document.getElementById('post-notes').value='';
+}
+
+// ── MIC ───────────────────────────────────────────────────
+function startMic(){
+  if(!getTog('steerright_tog_mic')){
+    showNotice('Microphone is turned off in settings. Running in demo mode.');
+    startDemo();return;
+  }
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR){showNotice('Live speech recognition needs Chrome on Android. Running in demo mode.');startDemo();return;}
+  recognition=new SR();recognition.continuous=true;recognition.interimResults=true;recognition.lang='en-US';
+  recognition.onstart=()=>{
+    document.getElementById('mdot').classList.remove('wait');document.getElementById('mdot').classList.add('live');
+    document.getElementById('mlbl').textContent='● Listening';document.getElementById('mlbl').className='mlbl on';
+    hide('mic-notice');show('wave-wrap');startWave();recognizing=true;
+  };
+  recognition.onresult=e=>{
+    let fin='',int='';
+    for(let i=e.resultIndex;i<e.results.length;i++){if(e.results[i].isFinal)fin+=e.results[i][0].transcript+' ';else int+=e.results[i][0].transcript;}
+    if(fin){fin=fin.trim();transcript.push(fin);abuf+=fin+'. ';addLine(fin);document.getElementById('wtxt').textContent='"'+fin.slice(0,50)+'"';clearTimeout(aTimer);}
+    else if(int)document.getElementById('wtxt').textContent='Hearing: "'+int.slice(0,45)+'…"';
+  };
+  recognition.onerror=e=>{if(e.error==='not-allowed')showNotice('Mic blocked. Allow microphone in your browser settings. Running demo mode.');};
+  recognition.onend=()=>{if(lessonActive&&recognizing){try{recognition.start();}catch(e){}}};
+  try{recognition.start();}catch(e){showNotice('Could not start microphone. Running demo mode.');startDemo();}
+}
+function stopMic(){recognizing=false;if(recognition){try{recognition.stop();}catch(e){}}stopWave();clearInterval(demoInt);if(gpsWatcher!==null&&navigator.geolocation){navigator.geolocation.clearWatch(gpsWatcher);gpsWatcher=null;}}
+function showNotice(msg){document.getElementById('mic-notice').textContent=msg;show('mic-notice');document.getElementById('mdot').classList.remove('wait');document.getElementById('mdot').classList.add('live');document.getElementById('mlbl').textContent='● Demo';document.getElementById('mlbl').className='mlbl on';show('wave-wrap');startWave();}
+const DEMO=['Slow down, coming up to the stop sign','Check mirrors before the lane change','Signal before you turn — always','Nice stop, scan left and right','Great, try the roundabout now','Brake earlier, give yourself more room','Good shoulder check! Accelerate onto the highway','Watch speed in the school zone — 25','Good job centering in the lane'];
+let dI=0;
+function startDemo(){demoInt=setInterval(()=>{if(!lessonActive){clearInterval(demoInt);return;}const l=DEMO[dI%DEMO.length];dI++;transcript.push(l);abuf+=l+'. ';addLine(l);document.getElementById('wtxt').textContent='"'+l+'"';},9000);}
+function addLine(l){const x=document.getElementById('xscript'),d=document.createElement('div');const loc=curCoord||curLoc;d.textContent='['+new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',second:'2-digit',hour12:true})+' · '+loc+'] '+l;x.appendChild(d);x.scrollTop=x.scrollHeight;}
+function clearX(){document.getElementById('xscript').innerHTML='';transcript=[];}
+function startWave(){const wf=document.getElementById('waveform');wf.innerHTML=Array.from({length:16},()=>'<div class="wbar" style="height:3px"></div>').join('');wTimer=setInterval(()=>{wf.querySelectorAll('.wbar').forEach(b=>{b.style.height=Math.floor(2+Math.random()*22)+'px';});},100);}
+function stopWave(){clearInterval(wTimer);const wf=document.getElementById('waveform');if(wf)wf.querySelectorAll('.wbar').forEach(b=>b.style.height='3px');}
+
+// ── CAR + GPS ─────────────────────────────────────────────
+function startCar(){
+  carTimer=setInterval(()=>{if(!lessonActive){clearInterval(carTimer);return;}carPos=Math.min(carPos+5+Math.random()*7,82);if(carPos>78)carPos=10;document.getElementById('mcar').style.left=carPos+'%';},4000);
+  if(navigator.geolocation&&getTog('steerright_tog_gps')){
+    gpsWatcher=navigator.geolocation.watchPosition(
+      pos=>{curCoord=pos.coords.latitude.toFixed(5)+'° N, '+Math.abs(pos.coords.longitude).toFixed(5)+'° W';curLoc=curCoord;gpsReady=true;document.getElementById('mloc').textContent='GPS: '+curCoord;},
+      ()=>{locIdx++;curLoc=LOCS[locIdx%LOCS.length];curCoord='';document.getElementById('mloc').textContent=curLoc;},
+      {enableHighAccuracy:true,maximumAge:10000,timeout:10000}
+    );
+  }else{
+    setInterval(()=>{if(!lessonActive)return;locIdx++;curLoc=LOCS[locIdx%LOCS.length];curCoord='';document.getElementById('mloc').textContent=curLoc;},30000);
+  }
+}
+function stopCar(){clearInterval(carTimer);}
+
+// ── DRUM PICKER ──────────────────────────────────────────────────────
+const MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const MONTH_NUMS=['01','02','03','04','05','06','07','08','09','10','11','12'];
+const drumState={};
+
+function buildDrum(id,items,initIdx){
+  const el=document.getElementById('drum-'+id);
+  if(!el)return;
+  const inner=document.createElement('div');
+  inner.className='drum-inner';
+  inner.id='drum-inner-'+id;
+  // Add padding items top/bottom so selection feels centered
+  const pad=3;
+  for(let i=0;i<pad;i++){
+    const d=document.createElement('div');d.className='drum-item';d.textContent='';inner.appendChild(d);
+  }
+  items.forEach((item,i)=>{
+    const d=document.createElement('div');
+    d.className='drum-item'+(i===initIdx?' selected':'');
+    d.textContent=item;inner.appendChild(d);
+  });
+  for(let i=0;i<pad;i++){
+    const d=document.createElement('div');d.className='drum-item';d.textContent='';inner.appendChild(d);
+  }
+  // Highlight bar
+  const hl=document.createElement('div');hl.className='drum-highlight';
+  const ft=document.createElement('div');ft.className='drum-fade-top';
+  const fb=document.createElement('div');fb.className='drum-fade-bot';
+  el.appendChild(inner);el.appendChild(hl);el.appendChild(ft);el.appendChild(fb);
+
+  drumState[id]={items,idx:initIdx,pad,inner,el};
+  setDrumPos(id,initIdx,false);
+  addDrumEvents(id);
+}
+
+function setDrumPos(id,idx,animate){
+  const s=drumState[id];if(!s)return;
+  s.idx=Math.max(0,Math.min(s.items.length-1,idx));
+  const offset=-(s.idx+s.pad)*44+140/2-22;
+  s.inner.style.transition=animate?'transform .2s cubic-bezier(.25,.46,.45,.94)':'none';
+  s.inner.style.transform=`translateY(${offset}px)`;
+  // Update selected class
+  const allItems=s.inner.querySelectorAll('.drum-item');
+  allItems.forEach((el,i)=>{
+    const realIdx=i-s.pad;
+    el.classList.toggle('selected',realIdx===s.idx);
+  });
+  updateDrumVal(id);
+}
+
+function getDrumVal(id){
+  const s=drumState[id];if(!s)return null;
+  return s.items[s.idx];
+}
+
+function updateDrumVal(id){
+  const parts=id.split('-');
+  const prefix=parts.slice(0,-1).join('-'); // 'bday' or 'pm'
+  const part=parts[parts.length-1]; // 'm', 'd', 'y'
+  const dvEl=document.getElementById('dv-'+id);
+  if(dvEl){
+    const v=getDrumVal(id);
+    dvEl.textContent=v||'';
+  }
+  syncHiddenDate(prefix);
+}
+
+function syncHiddenDate(prefix){
+  const mEl=drumState[prefix+'-m'];
+  const dEl=drumState[prefix+'-d'];
+  const yEl=drumState[prefix+'-y'];
+  if(!mEl||!dEl||!yEl)return;
+  const mIdx=mEl.idx;
+  const d=String(parseInt(getDrumVal(prefix+'-d'))||1).padStart(2,'0');
+  const m=MONTH_NUMS[mIdx]||'01';
+  const y=getDrumVal(prefix+'-y')||'2000';
+  const val=`${y}-${m}-${d}`;
+  const hidden=document.getElementById('f-'+prefix.replace('bday','bd').replace('pm','pm'));
+  if(hidden){hidden.value=val;}
+  if(prefix==='bday'){
+    const a=getAge(val);
+    document.getElementById('f-age').textContent=a!=='—'?a+' yrs old':'—';
+  }
+}
+
+function addDrumEvents(id){
+  const s=drumState[id];if(!s)return;
+  const el=s.el;
+  let startY=0,startIdx=0,isDragging=false,lastY=0,velocity=0,lastTime=0;
+
+  const onStart=e=>{
+    isDragging=true;
+    startY=e.touches?e.touches[0].clientY:e.clientY;
+    startIdx=s.idx;lastY=startY;velocity=0;lastTime=Date.now();
+    s.inner.style.transition='none';
+    e.preventDefault();
+  };
+  const onMove=e=>{
+    if(!isDragging)return;
+    const y=e.touches?e.touches[0].clientY:e.clientY;
+    const now=Date.now();
+    velocity=(lastY-y)/(now-lastTime||1)*16;
+    lastY=y;lastTime=now;
+    const delta=startY-y;
+    const newIdx=Math.round(startIdx+delta/44);
+    setDrumPos(id,newIdx,false);
+    e.preventDefault();
+  };
+  const onEnd=e=>{
+    if(!isDragging)return;isDragging=false;
+    // Momentum
+    let finalIdx=s.idx+Math.round(velocity*3);
+    setDrumPos(id,finalIdx,true);
+    updateDrumVal(id);
+  };
+
+  el.addEventListener('touchstart',onStart,{passive:false});
+  el.addEventListener('touchmove',onMove,{passive:false});
+  el.addEventListener('touchend',onEnd);
+  el.addEventListener('mousedown',onStart);
+  window.addEventListener('mousemove',e=>{if(isDragging)onMove(e);});
+  window.addEventListener('mouseup',e=>{if(isDragging)onEnd(e);});
+}
+
+function initDrums(bdVal,pmVal){
+  // Birthday drum
+  const now=new Date();
+  const curYear=now.getFullYear();
+  const bdYears=[];for(let y=curYear-2;y>=curYear-20;y--)bdYears.push(String(y));
+  const days=[];for(let d=1;d<=31;d++)days.push(String(d));
+
+  let bdMIdx=0,bdDIdx=0,bdYIdx=0;
+  if(bdVal){
+    const p=bdVal.split('-');
+    bdMIdx=parseInt(p[1]||1)-1;
+    bdDIdx=parseInt(p[2]||1)-1;
+    bdYIdx=bdYears.indexOf(p[0]);
+    if(bdYIdx<0)bdYIdx=5;
+  } else {bdMIdx=0;bdDIdx=0;bdYIdx=5;}
+
+  buildDrum('bday-m',MONTHS,bdMIdx);
+  buildDrum('bday-d',days,bdDIdx);
+  buildDrum('bday-y',bdYears,bdYIdx);
+
+  // Permit date drum
+  const pmYears=[];for(let y=curYear+1;y>=curYear-3;y--)pmYears.push(String(y));
+  let pmMIdx=0,pmDIdx=0,pmYIdx=1;
+  if(pmVal){
+    const p=pmVal.split('-');
+    pmMIdx=parseInt(p[1]||1)-1;
+    pmDIdx=parseInt(p[2]||1)-1;
+    pmYIdx=pmYears.indexOf(p[0]);
+    if(pmYIdx<0)pmYIdx=1;
+  }
+
+  buildDrum('pm-m',MONTHS,pmMIdx);
+  buildDrum('pm-d',days,pmDIdx);
+  buildDrum('pm-y',pmYears,pmYIdx);
+}
+
+function getDrumDate(prefix){
+  const mIdx=drumState[prefix+'-m']?drumState[prefix+'-m'].idx:0;
+  const d=getDrumVal(prefix+'-d')||'1';
+  const m=MONTH_NUMS[mIdx]||'01';
+  const y=getDrumVal(prefix+'-y')||'2000';
+  return `${y}-${String(m).padStart(2,'0')}-${String(parseInt(d)).padStart(2,'0')}`;
+}
+
+// ── SETTINGS ─────────────────────────────────────────────────────────
+function toggleSettings(){
+  const el=document.getElementById('settings-bar');
+  const open=el.style.display==='flex';
+  el.style.display=open?'none':'flex';
+  if(!open){document.getElementById('instructor-name').value=getInstructor();}
+}
+function saveTog(){
+  localStorage.setItem('steerright_tog_mic',document.getElementById('tog-mic').checked?'1':'0');
+  localStorage.setItem('steerright_tog_gps',document.getElementById('tog-gps').checked?'1':'0');
+}
+function getTog(key){const v=localStorage.getItem(key);return v===null?true:v==='1';}
+function loadToggles(){
+  document.getElementById('tog-mic').checked=getTog('steerright_tog_mic');
+  document.getElementById('tog-gps').checked=getTog('steerright_tog_gps');
+}
+
+// ── BACKUP / RESTORE ──────────────────────────────────────
+function exportBackup(){
+  if(!students.length){alert('No students to back up yet.');return;}
+  const blob=new Blob([JSON.stringify({version:2,exported:new Date().toISOString(),students},null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  const d=new Date();a.download='drivecoach-'+d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')+'.json';a.click();
+  showBkMsg('✓ Backup downloaded! Save to iCloud or email it to yourself.',true);
+}
+function importBackup(e){
+  const file=e.target.files[0];if(!file)return;
+  const r=new FileReader();
+  r.onload=ev=>{
+    try{
+      const data=JSON.parse(ev.target.result);
+      if(!data.students||!Array.isArray(data.students)){showBkMsg('⚠ Not a valid Drive Coach backup.',false);return;}
+      if(students.length>0){
+        if(!confirm('Merge this backup with your '+students.length+' existing student'+(students.length!==1?'s':'')+' (no duplicates)?'))return;
+        let added=0;data.students.forEach(ns=>{if(!students.some(s=>s.fname===ns.fname&&s.lname===ns.lname)){students.push(ns);added++;}});
+        persist();renderRoster();updateSelects();showBkMsg('✓ Merged — added '+added+' new student'+(added!==1?'s':'')+'.',true);
+      }else{
+        students=data.students;persist();renderRoster();updateSelects();showBkMsg('✓ Restored '+students.length+' student'+(students.length!==1?'s':'')+'.',true);
+      }
+    }catch(err){showBkMsg('⚠ Could not read that file.',false);}
+    document.getElementById('restore-file').value='';
+  };r.readAsText(file);
+}
+function showBkMsg(msg,good){
+  const el=document.getElementById('backup-msg');
+  el.textContent=msg;el.style.color=good?'var(--green)':'var(--amber)';
+  el.style.background=good?'var(--gbg)':'var(--ambg)';
+  el.classList.remove('hide');setTimeout(()=>el.classList.add('hide'),5000);
+}
+
+// ── TABS ──────────────────────────────────────────────────
+function goTab(id){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
+  document.querySelector('.tab[onclick="goTab(\''+id+'\')"]').classList.add('on');
+  document.getElementById('page-'+id).classList.add('on');
+}
+
+load();loadToggles();
+</script>
+</body>
+</html>
