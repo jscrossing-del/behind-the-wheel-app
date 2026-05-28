@@ -61,17 +61,6 @@ input:focus,textarea:focus,select:focus{border-color:var(--bbr);background:var(-
 textarea{resize:none;min-height:80px;line-height:1.5}
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 
-/* DRUM DATE PICKER */
-.drum-wrap{display:flex;gap:6px}
-.drum-col{flex:1;display:flex;flex-direction:column;align-items:center}
-.drum-lbl{font-size:11px;font-weight:700;color:var(--txt2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px}
-.drum{height:132px;overflow:hidden;position:relative;border-radius:12px;background:var(--bg2);border:1px solid var(--br2);cursor:ns-resize;-webkit-user-select:none;user-select:none;touch-action:none}
-.drum-list{position:absolute;width:100%;will-change:transform}
-.drum-item{height:44px;display:flex;align-items:center;justify-content:center;font-size:17px;color:var(--txt3);transition:color .1s,font-size .1s;font-weight:500}
-.drum-item.sel{color:var(--txt);font-size:19px;font-weight:700}
-.drum-sel-bar{position:absolute;left:0;right:0;top:44px;height:44px;background:var(--bbg);border-top:2px solid var(--bbr);border-bottom:2px solid var(--bbr);pointer-events:none;border-radius:4px;z-index:1}
-.drum-fade-t{position:absolute;top:0;left:0;right:0;height:40px;background:linear-gradient(var(--bg2),transparent);pointer-events:none;z-index:2}
-.drum-fade-b{position:absolute;bottom:0;left:0;right:0;height:40px;background:linear-gradient(transparent,var(--bg2));pointer-events:none;z-index:2}
 
 /* BUTTONS */
 .btn{display:block;width:100%;padding:14px;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer;font-family:inherit;border:1px solid var(--br2);background:var(--bg2);color:var(--txt);text-align:center;margin-bottom:10px}
@@ -239,17 +228,17 @@ textarea{resize:none;min-height:80px;line-height:1.5}
       </div>
       <div class="field">
         <label>Birthday</label>
-        <div class="drum-wrap" id="dw-bday"></div>
+        <input type="date" id="dw-bday">
         <div style="font-size:13px;color:var(--txt2);margin-top:5px">Age: <span id="f-age" style="font-weight:600">—</span></div>
       </div>
       <div class="field">
         <label>Permit date</label>
-        <div class="drum-wrap" id="dw-permit"></div>
+        <input type="date" id="dw-permit">
         <div style="font-size:13px;color:var(--txt2);margin-top:5px">Days on permit: <span id="f-permit-days" style="font-weight:600">—</span></div>
       </div>
       <div class="field"><label>Permit number</label><input id="f-pnum" placeholder="A123-456-789"></div>
       <div class="field"><label>Phone</label><input type="tel" id="f-ph" placeholder="612-555-0000"></div>
-      <div class="field"><label>BTW start date</label><div class="drum-wrap" id="dw-btw"></div></div>
+      <div class="field"><label>BTW start date</label><input type="date" id="dw-btw"></div>
       <div class="field">
         <label>Interests & hobbies</label>
         <div class="tag-wrap" id="tag-wrap"></div>
@@ -417,58 +406,41 @@ const COLS=[{bg:'#e6f1fb',tx:'#0c447c'},{bg:'#e1f5ee',tx:'#085041'},{bg:'#faeeda
 
 // ── LESSON PLANS ─────────────────────────────────────────────────────────
 const LP={
-  1:{title:'Lesson 1 — Foundations & Residential',sections:[
+  1:{title:'Lesson 1',sections:[
     {h:'Pre-drive',items:[
-      {t:'Hand position on the wheel',d:'9 & 3, relaxed grip, no crossing arms.',m:'Gripping too tight or holding at 12 — causes oversteering.'},
-      {t:'Adjust seat, mirrors & head restraint',d:'Seat at arm\'s length, mirrors cover blind spots, head restraint at ear level.',m:'Skipping this — mirrors set wrong all lesson.'},
-      {t:'Seatbelt, dashboard & controls',d:'Seatbelt clicks, can identify wipers, lights, hazards without looking.',m:'Not knowing where controls are in an emergency.'},
-      {t:'SMOG — introduce the concept',d:'Signal, Mirror, Over shoulder, Go — every lane change and maneuver, every time.',m:'Forgetting the over-shoulder check — the biggest one.'},
-      {t:'Mirror check habit — every 5-8 seconds + before every maneuver',d:'Eyes moving regularly, not fixated on one spot.',m:'Only checking mirrors when something happens — too late.'},
+      {t:'Punch in',d:'Log the start time before getting in the car.',m:'Skipping this — no record of when the lesson started.'},
+      {t:'Adj seat',d:'Seat at arm\'s length from wheel, foot can fully press brake, sightlines clear.',m:'Seat too close or too far — affects control all lesson.'},
+      {t:'Adj mirrors',d:'Side mirrors cover blind spots, rearview centered on back window.',m:'Skipping mirrors — if they\'re wrong they stay wrong the whole drive.'},
+      {t:'Hand position',d:'9 & 3, relaxed grip, no crossing arms.',m:'Gripping too tight or holding at 12 — causes oversteering.'},
+      {t:'Dashboard review',d:'Can identify wipers, lights, hazards, and defrost without looking.',m:'Not knowing where controls are in an emergency.'},
+      {t:'SMOG review',d:'Signal, Mirror, Over shoulder, Go — every lane change and maneuver, every time.',m:'Forgetting the over-shoulder check — the biggest blind spot mistake.'},
     ]},
-    {h:'Parking lot basics',items:[
-      {t:'Parking lot rules & etiquette',d:'One-way lanes, yield to pedestrians, don\'t cut through spaces, watch for cars backing out.',m:'Treating a parking lot like a road — speeds are low but hazards are everywhere.'},
-      {t:'Steering control & smoothness',d:'Car goes where eyes go — looking 10-12 seconds ahead keeps steering smooth.',m:'Looking too close to the car — causes overcorrecting and weaving.'},
-      {t:'Smooth acceleration & braking',d:'Gradual, even pressure on both pedals — no jerking.',m:'Stabbing the gas or brake — abrupt and uncomfortable.'},
-      {t:'Turning radius awareness',d:'Knows how wide the car swings — doesn\'t cut corners or run wide.',m:'Turning too early or too late — ends up on the wrong side.'},
+    {h:'Residential',items:[
+      {t:'Unmarked roads',d:'Treat as two-way, stay right of center, reduce speed for limited sight lines.',m:'Driving down the middle of an unmarked road.'},
+      {t:'Lane position',d:'Equal space on both sides, centered through turns.',m:'Drifting toward the right edge or the center line.'},
+      {t:'Complete stops',d:'Tires fully stop rolling before checking — not a slow roll.',m:'Rolling stop — automatic fail on road test.'},
+      {t:'4 way stop',d:'First to stop, first to go. Tie goes to the right.',m:'Waving others through when it\'s their turn — causes confusion.'},
+      {t:'Stop and creep',d:'At blind intersections: full stop first, then inch forward until the sight line opens.',m:'Pulling all the way into the intersection to see — too far, too fast.'},
+      {t:'Bubble around parked cars',d:'Give parked cars a full door-width of space in case a door opens.',m:'Hugging parked cars — a door swinging open has nowhere to go.'},
+      {t:'Watch for pedestrians',d:'Eyes to sidewalks and crosswalks, not just other cars. Yield before the crosswalk.',m:'Only watching for cars and missing a pedestrian stepping off the curb.'},
+      {t:'Uncontrolled intersections',d:'No signs or lights — treat as 4-way stop. Yield to right, proceed carefully.',m:'Assuming right of way at an unmarked intersection.'},
     ]},
-    {h:'Basics & vehicle control',items:[
-      {t:'Smooth steering — look ahead, not at the hood',d:'Car goes where eyes go — looking 10-12 seconds ahead keeps steering smooth.',m:'Looking too close to the car — causes overcorrecting and weaving.'},
-      {t:'Lane position — centered, not drifting',d:'Equal space on both sides, stays centered through turns.',m:'Hugging the right edge or drifting toward oncoming traffic.'},
-      {t:'Covering the brake',d:'Foot hovering over brake approaching intersections and hazards — not resting on it.',m:'Resting foot on brake — constant brake lights confuse following drivers.'},
-      {t:'Looking ahead for hazards & potential problems',d:'Scanning intersections, driveways, parked cars, and pedestrians early.',m:'Reacting too late because eyes weren\'t scanning far enough ahead.'},
-      {t:'Speed adjustment for conditions — rain, gravel, hills, reduced sight lines',d:'Slows before the hazard, not during it.',m:'Maintaining speed into blind corners or on gravel — biggest county road mistake.'},
-      {t:'Stopping distance awareness',d:'Understands it takes much longer to stop than expected.',m:'Following too close — not enough room to stop.'},
-      {t:'3-second following rule',d:'Picks a fixed object — car passes it 3 seconds after the car ahead.',m:'Thinks they\'re following at 3 seconds but it\'s really 1.'},
+    {h:'Parking',items:[
+      {t:'SMOG and park',d:'Full Signal-Mirror-Shoulder check before pulling to the curb.',m:'Pulling over without checking — could cut off a cyclist or car behind.'},
+      {t:'SMOG and leave',d:'Full check before re-entering traffic from a parked position.',m:'Pulling out blind — merging into oncoming traffic.'},
+      {t:'Downhill park',d:'Wheels turned toward the curb, parking brake on, in Park.',m:'Turning wheels the wrong direction — rolls into traffic if brake fails.'},
+      {t:'Cul de sac',d:'Wide arc, stay right, yield to any car coming the other way in the circle.',m:'Cutting across the center or swinging wide into the wrong lane.'},
+      {t:'Uphill park',d:'Wheels turned away from curb (toward traffic), parking brake on, in Park.',m:'Same direction as downhill — the opposite rule trips everyone up.'},
+      {t:'Parking lot rules',d:'One-way lanes, yield to pedestrians, don\'t cut through spaces, watch for cars backing out.',m:'Treating a parking lot like a road — hazards are everywhere at low speed.'},
+      {t:'90 degree back',d:'Check all directions before each move, slow and controlled into the space.',m:'Moving too fast or not checking before reversing.'},
+      {t:'Weird parking lot',d:'Navigate an unfamiliar lot — look for flow arrows, tight corners, pedestrian crossings.',m:'Assuming all lots work the same — markings and layouts vary.'},
     ]},
-    {h:'Turns & intersections',items:[
-      {t:'Right turns — approach, yield, execute',d:'Signals early, moves right, checks pedestrians, smooth arc.',m:'Swinging wide into oncoming traffic on the turn.'},
-      {t:'Left turns — approach, yield, execute',d:'Signals early, waits for clear gap, turns into closest lane.',m:'Turning into the far lane instead of the closest lane.'},
-      {t:'Signaling habits — signal early, every time',d:'Signal on before braking, not during or after.',m:'Signaling at the last second — gives no one time to react.'},
-      {t:'Intersection scanning (left-right-left)',d:'Full scan before entering, even on green.',m:'Looking only one direction — missing cross traffic.'},
-      {t:'4-way stops & right of way rules',d:'First to stop, first to go; tie goes to the right.',m:'Waving others through when it\'s their turn — causes confusion.'},
-      {t:'Bypass lane vs no bypass lane',d:'Knows when a right turn lane exists and uses it correctly.',m:'Stopping in through traffic to turn right when a bypass lane is available.'},
-    ]},
-    {h:'Residential & unmarked roads',items:[
-      {t:'Speed management in neighborhoods',d:'At or under 25 mph, slows near driveways, parked cars, kids.',m:'Maintaining 30+ in a neighborhood — fails road test.'},
-      {t:'Stop signs — full stop technique',d:'Comes to a complete stop, tires stop rolling, then checks.',m:'Rolling stop — automatic fail on road test.'},
-      {t:'Pedestrians & cyclists — awareness and right of way',d:'Slows and yields before the crosswalk, doesn\'t just check for cars.',m:'Watching only for cars and missing a pedestrian stepping off the curb.'},
-      {t:'Awareness on hills & corners — reduced sight lines',d:'Slows before the crest or corner, stays right, ready to react.',m:'Cresting a hill at full speed — no time to react to stopped traffic.'},
-    ]},
-    {h:'Special maneuvers',items:[
-      {t:'SMOG before hill parking',d:'Checks mirrors and over shoulder before pulling over.',m:'Pulling to curb without checking — could cut off a cyclist.'},
-      {t:'Hill parking — uphill & downhill (with/without curb)',d:'Wheels turned correct direction, parking brake on, in Park.',m:'Turning wheels the wrong direction — rolls into traffic if brake fails.'},
-      {t:'Angle parking — entering & exiting',d:'Centered in space, even on both sides, slow entry.',m:'Pulling in crooked — hard to exit and blocks adjacent spaces.'},
-      {t:'Front 90° pull-in parking',d:'Turns when door mirrors align with the space line, centered.',m:'Turning too early or too late — ends up on the line.'},
-      {t:'90-degree back (3-point turn)',d:'Checks all directions before each move, slow and controlled.',m:'Moving too fast or not checking before reversing.'},
-      {t:'Roundabout — yield, enter, exit',d:'Yields to traffic in the circle, signals exiting not entering.',m:'Stopping inside the roundabout or signaling on entry.'},
-      {t:'SMOG before parallel parking',d:'Checks mirrors and over shoulder before pulling up alongside reference car.',m:'Skipping this — could pull in front of traffic.'},
-      {t:'Parallel parking — reference points, two-part technique',d:'Uses consistent reference points, ends up within 12 inches of curb.',m:'Going too fast — rushes the maneuver and loses reference points.'},
-      {t:'SMOG before pulling out of parallel space',d:'Full check before re-entering traffic.',m:'Pulling straight out without checking — merging blind.'},
-    ]},
-    {h:'County road driving',items:[
-      {t:'Speed & lane position on county roads',d:'Stays right of center, adjusts speed for road width and sight lines.',m:'Drifting to the center line on narrow county roads.'},
-      {t:'Gravel & unmarked road awareness',d:'Slows significantly on gravel — loose surface changes stopping distance.',m:'Braking hard on gravel — causes skidding and loss of control.'},
-      {t:'Passing zones & sight lines',d:'Only passes in a marked passing zone with clear sight ahead.',m:'Attempting to pass on a hill or corner — can\'t see oncoming traffic.'},
+    {h:'Advanced',items:[
+      {t:'Highway 95',d:'Build to highway speed on the ramp, SMOG on every lane change, decelerate after the exit.',m:'Reaching the end of the on-ramp at 45 — forces a dangerous merge into fast traffic.'},
+      {t:'Roundabout',d:'Yield to traffic already in the circle, signal when exiting (not entering), steady speed through.',m:'Stopping inside the roundabout or signaling on entry.'},
+      {t:'Hills and corners seeing distance',d:'Slow before the crest or corner — you can\'t react to what you can\'t see yet.',m:'Cresting a hill at full speed and finding stopped traffic.'},
+      {t:'Possibly parallel park',d:'SMOG before pulling up, consistent reference points, two-part back-and-forward technique.',m:'Going too fast — loses reference points and ends up crooked or far from curb.'},
+      {t:'Possible stoplights',d:'Approach early, smooth stop behind the line, scan left-right-left before going on green.',m:'Going immediately on green without scanning — red-light runners are most dangerous here.'},
     ]},
   ]},
   2:{title:'Lesson 2 — Town & Highway',sections:[
@@ -541,123 +513,6 @@ const LP={
   ]}
 };
 
-// ── DRUM DATE PICKER ──────────────────────────────────────────────────────
-const MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-const MON_NUM=['01','02','03','04','05','06','07','08','09','10','11','12'];
-const drums={};
-
-function makeDrum(containerId,items,initIdx,onChange){
-  const wrap=document.getElementById(containerId);
-  if(!wrap)return null;
-  // Build column inside wrap — caller adds multiple cols to drum-wrap
-  // Actually each call makes one col and appends it
-  const col=document.createElement('div');
-  col.className='drum-col';
-  const lbl=document.createElement('div');
-  lbl.className='drum-lbl';
-  lbl.textContent=items===MONTHS?'Month':items.length===31?'Day':'Year';
-  const d=document.createElement('div');
-  d.className='drum';
-  const list=document.createElement('div');
-  list.className='drum-list';
-  // pad 1 above and below (3 visible, center is selected)
-  for(let i=0;i<1;i++){const el=document.createElement('div');el.className='drum-item';el.textContent='';list.appendChild(el);}
-  items.forEach((item,i)=>{
-    const el=document.createElement('div');
-    el.className='drum-item'+(i===initIdx?' sel':'');
-    el.textContent=item;
-    list.appendChild(el);
-  });
-  for(let i=0;i<1;i++){const el=document.createElement('div');el.className='drum-item';el.textContent='';list.appendChild(el);}
-  const bar=document.createElement('div');bar.className='drum-sel-bar';
-  const ft=document.createElement('div');ft.className='drum-fade-t';
-  const fb=document.createElement('div');fb.className='drum-fade-b';
-  d.appendChild(list);d.appendChild(bar);d.appendChild(ft);d.appendChild(fb);
-  col.appendChild(lbl);col.appendChild(d);
-  wrap.appendChild(col);
-
-  const state={items,idx:initIdx,list,el:d,onChange};
-  setDrumPos(state,initIdx,false);
-  addDrumTouch(state);
-  return state;
-}
-
-function setDrumPos(state,idx,animate){
-  idx=Math.max(0,Math.min(state.items.length-1,idx));
-  state.idx=idx;
-  // center = 44px offset (1 pad item above) + idx*44, then translate so selected is in middle
-  const offset=-(idx+1)*44+44;
-  state.list.style.transition=animate?'transform .18s cubic-bezier(.25,.46,.45,.94)':'none';
-  state.list.style.transform=`translateY(${offset}px)`;
-  state.list.querySelectorAll('.drum-item').forEach((el,i)=>{
-    el.classList.toggle('sel',i-1===idx);
-  });
-  if(state.onChange)state.onChange(state.items[idx],idx);
-}
-
-function addDrumTouch(state){
-  let startY=0,startIdx=0,vel=0,lastY=0,lastT=0,dragging=false;
-  const el=state.el;
-  const start=e=>{
-    dragging=true;
-    startY=lastY=(e.touches?e.touches[0].clientY:e.clientY);
-    startIdx=state.idx;vel=0;lastT=Date.now();
-    state.list.style.transition='none';
-    e.preventDefault();
-  };
-  const move=e=>{
-    if(!dragging)return;
-    const y=(e.touches?e.touches[0].clientY:e.clientY);
-    const now=Date.now();
-    vel=(lastY-y)/Math.max(now-lastT,1)*16;
-    lastY=y;lastT=now;
-    const delta=startY-y;
-    setDrumPos(state,Math.round(startIdx+delta/44),false);
-    e.preventDefault();
-  };
-  const end=e=>{
-    if(!dragging)return;dragging=false;
-    setDrumPos(state,Math.round(state.idx+vel*2.5),true);
-  };
-  el.addEventListener('touchstart',start,{passive:false});
-  el.addEventListener('touchmove',move,{passive:false});
-  el.addEventListener('touchend',end);
-  el.addEventListener('mousedown',start);
-  window.addEventListener('mousemove',e=>{if(dragging)move(e);});
-  window.addEventListener('mouseup',e=>{if(dragging)end(e);});
-}
-
-function initDateDrums(containerId,dateVal,minYear,maxYear,onChange){
-  const wrap=document.getElementById(containerId);
-  if(!wrap)return;
-  wrap.innerHTML='';
-  let mIdx=0,dIdx=0,yIdx=0;
-  const years=[];
-  for(let y=maxYear;y>=minYear;y--)years.push(String(y));
-  if(dateVal){
-    const p=dateVal.split('-');
-    mIdx=Math.max(0,parseInt(p[1]||1)-1);
-    dIdx=Math.max(0,parseInt(p[2]||1)-1);
-    yIdx=Math.max(0,years.indexOf(p[0]));
-  }
-  const days=[];for(let i=1;i<=31;i++)days.push(String(i));
-  const dm=makeDrum(containerId,MONTHS,mIdx,()=>notifyChange());
-  const dd=makeDrum(containerId,days,dIdx,()=>notifyChange());
-  const dy=makeDrum(containerId,years,yIdx,()=>notifyChange());
-  drums[containerId]={m:dm,d:dd,y:dy,years,onChange};
-  function notifyChange(){
-    if(onChange)onChange(getDrumDate(containerId));
-  }
-}
-
-function getDrumDate(containerId){
-  const s=drums[containerId];
-  if(!s)return '';
-  const m=MON_NUM[s.m.idx]||'01';
-  const d=String(s.d.idx+1).padStart(2,'0');
-  const y=s.years[s.y.idx]||'2000';
-  return `${y}-${m}-${d}`;
-}
 
 // ── STORAGE ───────────────────────────────────────────────────────────────
 function load(){
@@ -1022,6 +877,24 @@ function buildPostLesson(si,lnV){
       }
     }
   });
+  // Lesson 3 — good luck message instead of standard post-lesson
+  if(lnV===3){
+    const practiceItems=struggled.length?struggled:['Complete stops','SMOG and park'];
+    document.getElementById('post-wrap').innerHTML=`
+      <div class="post-sec">
+        <div class="post-title" style="font-size:18px">Good luck on the test!</div>
+        <div class="post-sub" style="margin-top:6px">Here's what to keep practicing before test day:</div>
+        <div style="margin-top:10px">${practiceItems.map(x=>`<div style="display:flex;gap:8px;align-items:flex-start;font-size:15px;margin-bottom:8px"><span style="color:var(--gbr);font-weight:700">→</span><span>${x}</span></div>`).join('')}</div>
+      </div>
+      <div class="post-sec">
+        <div class="post-title">Add lesson notes</div>
+        <textarea id="post-notes" placeholder="Anything else to note…"></textarea>
+        <button class="btn btn-g" style="margin-top:8px" onclick="savePostNotes()">Save to profile</button>
+        <div class="ok hide" id="notes-ok">✓ Saved!</div>
+      </div>`;
+    return;
+  }
+
   document.getElementById('post-struggled').innerHTML=struggled.length
     ?struggled.map(x=>`<div style="display:flex;gap:6px;align-items:flex-start;font-size:14px;margin-bottom:4px"><span style="color:var(--ambr)">⚠</span><span>${x}</span></div>`).join('')
     :'<div style="font-size:13px;color:var(--txt3)">Nothing struggled — great lesson!</div>';
@@ -1181,24 +1054,22 @@ function openForm(i){
   document.getElementById('f-notes').value=s.notes||'';
   renderTags();
   showPg('pg-form');
-  // Init drums after page shown
-  const now=new Date().getFullYear();
-  setTimeout(()=>{
-    initDateDrums('dw-bday',s.bday||'',now-20,now-14,v=>{
-      document.getElementById('f-age').textContent=v?ageFrom(v)+' yrs old':'—';
-    });
-    initDateDrums('dw-permit',s.permit||'',now-2,now+1,v=>{
-      document.getElementById('f-permit-days').textContent=v?daysOn(v)+' days':'—';
-    });
-    initDateDrums('dw-btw',s.btwStart||'',now-2,now+1,null);
-  },60);
+  const bday=document.getElementById('dw-bday');
+  bday.value=s.bday||'';
+  bday.oninput=()=>{document.getElementById('f-age').textContent=bday.value?ageFrom(bday.value)+' yrs old':'—';};
+  document.getElementById('f-age').textContent=s.bday?ageFrom(s.bday)+' yrs old':'—';
+  const permit=document.getElementById('dw-permit');
+  permit.value=s.permit||'';
+  permit.oninput=()=>{document.getElementById('f-permit-days').textContent=permit.value?daysOn(permit.value)+' days':'—';};
+  document.getElementById('f-permit-days').textContent=s.permit?daysOn(s.permit)+' days':'—';
+  document.getElementById('dw-btw').value=s.btwStart||'';
 }
 function closeForm(){showPg('pg-main');}
 function saveStudent(){
   const fn=document.getElementById('f-fn').value.trim();if(!fn){alert('Please enter a first name.');return;}
-  const bday=getDrumDate('dw-bday');
-  const permit=getDrumDate('dw-permit');
-  const btwStart=getDrumDate('dw-btw');
+  const bday=document.getElementById('dw-bday').value;
+  const permit=document.getElementById('dw-permit').value;
+  const btwStart=document.getElementById('dw-btw').value;
   const o={fname:fn,lname:document.getElementById('f-ln').value.trim(),
     bday,permit,permitNum:document.getElementById('f-pnum').value.trim(),
     phone:document.getElementById('f-ph').value.trim(),notes:document.getElementById('f-notes').value.trim(),
